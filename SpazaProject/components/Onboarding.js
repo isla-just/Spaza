@@ -10,27 +10,15 @@ import Intro from './Intro'
 
 import AppIntroSlider from 'react-native-app-intro-slider';
 
-const width_proportion = '120%';
+const height_proportion = '100%';
 
 export default function Onboarding({navigation}) {
 
     return (
 
-        <Intro/>
-//         <View style={styles.container}>
+      // navigation.navigate("Permissions");
+ <Intro/>
 
-     
-
-//         {/* <Image source={logo} style={styles.logo} />
-//         <Image source={ill1} style={styles.ill1} />
-    
-//              <Text style={styles.header}>selling has never been simpler...</Text>
-//              <Text style={styles.header2}>streamlining your spaza shop</Text>
-
-// <TouchableOpacity onPress={()=> navigation.replace("Login")}>
-// </TouchableOpacity> */}
-
-//          </View>
     );
 }
 
@@ -49,7 +37,7 @@ const styles = StyleSheet.create({
       },
 
     ill1: { 
-      width: width_proportion,
+      height: height_proportion,
       marginTop: 40,
     },
       header:{

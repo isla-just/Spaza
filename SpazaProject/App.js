@@ -1,9 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
+
 import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Onboarding from './components/Onboarding';
+import Login from './components/Login';
+import SignUp from './components/Signup';
+import Intro from './components/Intro';
 
 // import {db} from "./Firebase";
 // import { doc, setDoc, collection, query, orderBy, startAt, endAt, getDoc } from "firebase/firestore";
@@ -12,21 +16,27 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 // import { onAuthStateChanged } from 'firebase/auth';
 // import { auth } from './Firebase';
 
-//Components
-import Onboarding from './components/Onboarding';
+
+
 
 
 export default function App() {
 
     //defining the stack
     const Stack= createNativeStackNavigator();
-    
+
   return (
     <NavigationContainer style={styles.container}>
 
       {/* //change this later */}
     <Stack.Navigator initialRouteName='Onboarding'>
         <Stack.Screen name="Onboarding" component ={Onboarding} options={{headerShown:false}}/>
+        <Stack.Screen name="Login" component ={Login} options={{headerShown:false}}/>
+        <Stack.Screen name="Signup" component ={SignUp} options={{headerShown:false}}/>
+        <Stack.Screen name="Intro" component ={Intro} options={{headerShown:false}}/>
+    
+
+
     </Stack.Navigator>
 
     </NavigationContainer>

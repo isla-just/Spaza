@@ -1,9 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text, Image } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import logo from '../assets/logo.png';
+import Login from './Login';
  
-const width_proportion = '120%';
+const height_proportion = '100%';
+const btn_prop = '80%';
+const txt_prop = '90%';
+
 
 const slides = [
     {
@@ -29,7 +33,7 @@ const slides = [
     }
   ];
  
-export default class App extends React.Component {
+export default class Intro extends React.Component {
 
     constructor(props){
         super(props)
@@ -41,36 +45,55 @@ export default class App extends React.Component {
   _renderItem = ({ item }) => {
     return (
         
-      <View style={styles.slide}>
+        <SafeAreaView style={styles.container}>
 
-         <Image source={logo} style={styles.logo} />
-        
-        <Image source={item.image} />
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.text}>{item.text}</Text>
-      </View>
+<Image source={logo} style={styles.logo} />
+
+                <View style={styles.slide}>
+
+          
+
+            <Image source={item.image} />
+            <Text style={styles.title}>{item.title}</Text>
+            <Text style={styles.text}>{item.text}</Text>
+
+            </View>
+
+            <TouchableOpacity style={styles.btn} onPress={this._onDone}>
+            <Text style={styles.btntxt}>Join the family</Text> 
+            </TouchableOpacity>
+            <View style={styles.btnbg}/>
+
+            </SafeAreaView>
+
     );
   }
   _onDone = () => {
     // User finished the introduction. Show real app through
     // navigation or simply by controlling state
     this.setState({ showRealApp: true });
+   
   }
   render() {
     if (this.state.showRealApp) {
-      return <App />;
+      return <Login />;
     } else {
-      return <AppIntroSlider renderItem={this._renderItem} data={slides} onDone={this._onDone}/>;
+      return <AppIntroSlider activeDotStyle={{width: 40, backgroundColor:'#1E2F4D'}} renderItem={this._renderItem} data={slides} onDone={this._onDone}/>;
     }
   }
 }
 
 const styles = StyleSheet.create({
-    slide: {
+    container: {
         flex: 1,
         backgroundColor: '#FFFFFF',
         width:'100%',
         padding:40, 
+        alignItems: 'center',
+      },
+    slide: {
+        backgroundColor: '#FFFFFF',
+        width:'100%',
         alignItems: 'center',
       },
     logo: { 
@@ -81,20 +104,22 @@ const styles = StyleSheet.create({
       },
 
     image: { 
-      width: width_proportion,
+      width: height_proportion,
       marginTop: 60,
     },
       title:{
           color:'#1E2F4D',
-          fontSize:30,
+          fontSize:25,
           marginTop:20,
-          textAlign:'center'
+          textAlign:'center',
+          width: txt_prop,
       },
       text:{
           color:'#1E2F4D',
-          fontSize:20,
+          fontSize:18,
           marginTop:10,
-          textAlign:'center'
+          textAlign:'center',
+          width: txt_prop,
       },
     buttonCircle: {
         width: 40,
@@ -104,4 +129,25 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
       },
+      btn:{
+        width: btn_prop,
+        padding: 20,
+        backgroundColor: 'transparent',
+        borderColor:'#1E2F4D',
+        borderWidth:1.5,
+        borderRadius:20,
+        marginTop:20
+      }, btntxt:{
+        textAlign:'center',
+        fontSize:15
+      },btnbg:{
+        width: btn_prop,
+        height:62, 
+        backgroundColor: '#FEB930',
+        borderRadius:20,
+        zIndex:-1,
+        marginTop:-55,
+        marginLeft:13
+
+      }
 });
