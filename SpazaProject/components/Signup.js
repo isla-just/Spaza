@@ -6,8 +6,9 @@ import scribble2 from '../assets/scribble2.png';
 import squiggle from '../assets/squiggle.png';
 
 // linking your firebase
-// import { signInWithEmailAndPassword } from 'firebase/auth';
-// import { auth } from '../Firebase';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../Firebase';
+import { createUserOnRegister } from '../services/Database';
 
 // import * as Font from 'expo-font';
 
@@ -28,20 +29,20 @@ export default function SignUp({navigation}) {
     // when pressing the login button
     const handleLoginPress = () =>{
 
-        // Keyboard.dismiss();
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredentials) =>{
+                //when successful
+                const user = userCredentials.user;
+                createUserOnRegister(user)
 
-        // signInWithEmailAndPassword(auth, email, password)
-        // .then((userCredentials) =>{
-        //     //when successful
-        //     const user = userCredentials.user;
-        //     // Alert.alert(user.uid);
-
-        //     navigation.navigate("Permissions");
-        // })
-        // .catch((error)=>{
-        //     //when failed
-        //     Alert.alert(error.message);
-        // })
+                //to do: add user to DB
+                Alert.alert("account created"+user.uid);
+                // navigation.replace("Permissions");
+            })
+            .catch((error)=>{
+                //when failed
+                Alert.alert(error.message);
+            })
     }
   return (
     <SafeAreaView style={styles.container}>
@@ -51,10 +52,10 @@ export default function SignUp({navigation}) {
             <View style={styles.card}>
 
             <Image source={logo} style={styles.logo} />
-            <Text style={styles.header}>login</Text>
+            <Text style={styles.header}>sign up</Text>
 
             <Image source={squiggle} style={styles.squiggle} />
-            <Text style={styles.text}>welcome back to spaza!</Text>
+            <Text style={styles.text}>join the spaza family</Text>
 
 
             <KeyboardAvoidingView 
@@ -67,6 +68,7 @@ export default function SignUp({navigation}) {
              placeholder='Email'
              placeholderTextColor='#616D82'
             />
+            
              <TextInput
              style={styles.input}
              value={password}
@@ -76,18 +78,17 @@ export default function SignUp({navigation}) {
              secureTextEntry={true}
             />
 
-<Text style={styles.oops}>oops I forgot</Text>
 
 <TouchableOpacity style={styles.btn} onPress={handleLoginPress}>
-            <Text style={styles.btntxt}>Login</Text> 
+            <Text style={styles.btntxt}>Sign up</Text> 
             </TouchableOpacity>
             <View style={styles.btnbg}/>
 
 
-            <Text style={styles.signupTxt}>Don’t have an account yet? </Text>
+            <Text style={styles.signupTxt}>Already have an account yet? </Text>
 
         <TouchableOpacity onPress={()=> navigation.replace("Login")}>
-             <Text style={styles.signupTxt2}>Sign up now</Text>
+             <Text style={styles.signupTxt2}>Sign in now</Text>
              <Image source={scribble2} style={styles.scribble2} />
         </TouchableOpacity>
 

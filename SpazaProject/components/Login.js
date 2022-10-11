@@ -86,7 +86,8 @@ export default function Login({navigation}) {
 
             <Text style={styles.signupTxt}>Don’t have an account yet? </Text>
 
-        <TouchableOpacity onPress={()=> navigation.navigate("Signup")}>
+
+        <TouchableOpacity onPress={()=> navigation.navigate('Signup')}>
              <Text style={styles.signupTxt2}>Sign up now</Text>
              <Image source={scribble2} style={styles.scribble2} />
         </TouchableOpacity>

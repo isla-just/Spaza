@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView } from 'r
 import AppIntroSlider from 'react-native-app-intro-slider';
 import logo from '../assets/logo.png';
 import Login from './Login';
+import Signup from './Signup';
  
 const height_proportion = '100%';
 const btn_prop = '80%';
@@ -63,6 +64,7 @@ export default class Intro extends React.Component {
             <Text style={styles.btntxt}>Join the family</Text> 
             </TouchableOpacity>
             <View style={styles.btnbg}/>
+
 
             </SafeAreaView>
 
