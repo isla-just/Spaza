@@ -1,11 +1,15 @@
 import { Camera, CameraType } from 'expo-camera';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import MlkitOdt from 'react-native-mlkit-odt';
 import logo from '../assets/logo.png';
 
 export default function CameraScreen() {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
+
+  const [pickedImagePath, setPickedImagePath] = useState('');
+  const [result,setResult] = useState("");
 
   if (!permission) {
     // Camera permissions are still loading
@@ -22,20 +26,44 @@ export default function CameraScreen() {
     );
   }
 
-  function toggleCameraType() {
-    setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
+  let camera;
+  async function __takePicture(){
+    if( camera ) {
+      const options = {quality: 0.5};
+      const data = await camera.takePictureAsync(options);
+      setPickedImagePath(data.uri)
+      console.log(data.uri);
+
+      finallyOcr()
+      
+      // const result = await MlkitOdt?.detectFromUri(data.uri);
+      // console.log(await MlkitOdt?.detectFromUri(data.uri));
+    }
   }
 
-  const __takePicture = async () => {
-    if (!camera) return
-    const photo = await camera.takePictureAsync()
+  const finallyOcr = async    () => {
+
+    if(pickedImagePath!=null){
+      const resultFromUri = await MlkitOdt?.detectFromUri(pickedImagePath);
+    }else{
+      console.log("data not fetched")
+    }
+    }
+
+
+
+  // const __takePicture = async () => {
+  //   if (!camera) return
+  //   const photo = await camera.current.takePictureAsync()
+  //   console.log(photo)
+  //   setPickedImagePath(true)
    
-  }
+  // }
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type}>
-    
+      <Camera style={styles.camera} type={type} ref={ref => (camera = ref)}>
+
       {/* <Image source={logo} style={styles.logo} /> */}
 
         <TouchableOpacity
