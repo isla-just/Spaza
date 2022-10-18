@@ -76,7 +76,7 @@ export default function Dashboard({navigation}) {
         <View style={styles.navigation}>
         <TouchableOpacity><Text  style={styles.navItemActive}>Home</Text></TouchableOpacity>
         <TouchableOpacity><Text  style={styles.navItem}>Stocktake</Text></TouchableOpacity>
-        <TouchableOpacity><Text  style={styles.navItem}>Sell</Text></TouchableOpacity>
+        <TouchableOpacity onPress={()=> navigation.navigate("SellInstructions")}><Text  style={styles.navItem}>Sell</Text></TouchableOpacity>
 
         <View style={styles.underline}></View>
         </View>

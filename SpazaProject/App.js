@@ -13,6 +13,8 @@ import Intro from './components/Intro';
 import Onboarding1 from './components/Onboarding1';
 import Onboarding2 from './components/Onboarding2';
 import Dashboard from './components/Dashboard';
+import SellInstructions from './components/SellInstructions';
+import CameraScreen from './components/CameraScreen';
 
 import {db} from "./Firebase";
 import { doc, setDoc, collection, query, orderBy, startAt, endAt, getDoc } from "firebase/firestore";
@@ -39,6 +41,8 @@ export default function App() {
         <Stack.Screen name="Onboarding1" component ={Onboarding1} options={{headerShown:false}}/>
         <Stack.Screen name="Onboarding2" component ={Onboarding2} options={{headerShown:false}}/>
         <Stack.Screen name="Dashboard" component ={Dashboard} options={{headerShown:false}}/>
+        <Stack.Screen name="SellInstructions" component ={SellInstructions} options={{headerShown:false}}/>
+        <Stack.Screen name="CameraScreen" component ={CameraScreen} options={{headerShown:false}}/>
         {/* <Stack.Screen name="Intro" component ={Intro} options={{headerShown:false}}/> */}
     
     </Stack.Navigator>
