@@ -1,9 +1,10 @@
 import React,{useState} from 'react';
-import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, Alert,KeyboardAvoidingView, Keyboard, SafeAreaView } from 'react-native';
+import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, Alert,KeyboardAvoidingView, Keyboard, SafeAreaView, ScrollView } from 'react-native';
 import logo from '../assets/logo.png';
 import card from '../assets/card.png';
 
 import pattern from '../assets/pattern.png';
+import placeholderGraph from '../assets/placeholderGraph.png';
 
 
 // import * as Font from 'expo-font';
@@ -20,6 +21,9 @@ const height_proportion = '100%';
 export default function Dashboard({navigation}) {
 
   return (
+    // <ScrollView>
+
+
     <SafeAreaView style={styles.container}>
 
         <View style={styles.container}>
@@ -46,17 +50,41 @@ export default function Dashboard({navigation}) {
             <Text style={styles.headerSection}>Sales history</Text>
             <Text style={styles.text}>last sale</Text>
 
+                <View style={styles.border}>
+                    <View style={styles.square}></View>
+
+                         <View style={styles.col2}>
+                         <Text style={styles.lastSale1}>2 items</Text>
+                         <Text style={styles.lastSale2}>2 November 2022</Text>
+                            </View>    
+
+                            <View style={styles.price}>
+                            <Text style={styles.lastSale3}>R80.00</Text>
+                            </View>
+            
+                          
+                </View>
+
+                <Text style={styles.textCat}>this month's sales</Text>
+                <Image source={placeholderGraph} style={styles.placeholderGraph} />
+
+
+           
 
         </View>
 
-          
+        <View style={styles.navigation}>
+        <TouchableOpacity><Text  style={styles.navItemActive}>Home</Text></TouchableOpacity>
+        <TouchableOpacity><Text  style={styles.navItem}>Stocktake</Text></TouchableOpacity>
+        <TouchableOpacity><Text  style={styles.navItem}>Sell</Text></TouchableOpacity>
 
-
-        <View style={styles.half}>
-
+        <View style={styles.underline}></View>
         </View>
+
+        
 
     </SafeAreaView>
+
   );
 }
 
@@ -92,6 +120,11 @@ const styles = StyleSheet.create({
         color:'#1E2F4D',
         fontSize:18,
         marginTop:5,
+        alignSelf:'flex-start'
+    },    textCat:{
+        color:'#1E2F4D',
+        fontSize:18,
+        marginTop:20,
         alignSelf:'flex-start'
     },
     pfp:{
@@ -172,6 +205,79 @@ text3:{
     textAlign:'left',
     marginTop:60,
     fontWeight:'bold'
+}, border:{
+    width:'100%',
+    borderWidth:1.5,
+    borderColor:'#1E2F4D',
+    borderRadius:18,
+   
+    marginTop:20,
+    flexDirection:'row',
+    justifyContent:'space-between',
+    alignItems: 'left',
+},square:{
+    borderRadius:18,
+    backgroundColor:'#FEB930',
+    width:58,
+    height:58,
+    margin:10,
+    
+}, lastSale1:{
+    color:'#1E2F4D',
+    fontSize:16,
+    marginTop:20,
+    textAlign:'left',
+  
+}, lastSale2:{
+    color:'#1E2F4D',
+    fontSize:12,
+    textAlign:'left',
+  
+},price:{
+    backgroundColor:'#C6D7EA',
+    width:90,
+    padding:10,
+    borderTopRightRadius:0,
+    borderTopLeftRadius:18,
+    borderBottomRightRadius:18,
+    borderBottomLeftRadius:0,
+    marginTop:35,
+    zIndex:-1
+}, lastSale3:{
+    color:'#1E2F4D',
+    fontSize:20,
+    textAlign:'left',
+  
+},placeholderGraph:{
+    marginTop:20
+},navigation:{
+    backgroundColor:'#1E2F4D',
+    width:'100%',
+    position:'absolute',
+    borderTopRightRadius:18,
+    borderTopLeftRadius:18,
+    borderBottomRightRadius:0,
+    borderBottomLeftRadius:0,
+    height:90,
+    bottom:0,
+    flexDirection:'row',
+    justifyContent:'space-around',
+    alignItems: 'left',
+    padding:20,
+},navItemActive:{
+    color:'#FFFFFF',
+    fontWeight:'bold',
+    fontSize:18
+},navItem:{
+    color:'#FFFFFF',
+    fontSize:18
+},underline:{
+    position:'absolute',
+    width:50,
+    height:2,
+    backgroundColor:'#FEB930',
+    marginTop:43,
+    marginLeft:20
 }
      
 });
