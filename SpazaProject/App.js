@@ -10,6 +10,9 @@ import Onboarding from './components/Onboarding';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Intro from './components/Intro';
+import Onboarding1 from './components/Onboarding1';
+import Onboarding2 from './components/Onboarding2';
+import Dashboard from './components/Dashboard';
 
 import {db} from "./Firebase";
 import { doc, setDoc, collection, query, orderBy, startAt, endAt, getDoc } from "firebase/firestore";
@@ -29,10 +32,13 @@ export default function App() {
     <NavigationContainer style={styles.container}>
 
       {/* //change this later */}
-    <Stack.Navigator initialRouteName='Onboarding'>
+    <Stack.Navigator initialRouteName='Login'>
         <Stack.Screen name="Onboarding" component ={Onboarding} options={{headerShown:false}}/>
         <Stack.Screen name="Login" component ={Login} options={{headerShown:false}}/>
         <Stack.Screen name="Signup" component ={Signup} options={{headerShown:false}}/>
+        <Stack.Screen name="Onboarding1" component ={Onboarding1} options={{headerShown:false}}/>
+        <Stack.Screen name="Onboarding2" component ={Onboarding2} options={{headerShown:false}}/>
+        <Stack.Screen name="Dashboard" component ={Dashboard} options={{headerShown:false}}/>
         {/* <Stack.Screen name="Intro" component ={Intro} options={{headerShown:false}}/> */}
     
     </Stack.Navigator>

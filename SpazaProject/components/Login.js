@@ -36,7 +36,7 @@ export default function Login({navigation}) {
             const user = userCredentials.user;
             Alert.alert(user.uid);
 
-            // navigation.navigate("Permissions");
+            navigation.navigate("Onboarding1");
         })
         .catch((error)=>{
             //when failed

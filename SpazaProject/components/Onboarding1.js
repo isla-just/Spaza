@@ -1,89 +1,35 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView } from 'react-native';
-import AppIntroSlider from 'react-native-app-intro-slider';
 import logo from '../assets/logo.png';
-import Login from './Login';
-import Signup from './Signup';
+import ill4 from '../assets/ill4.png';
  
 const height_proportion = '100%';
 const btn_prop = '80%';
 const txt_prop = '90%';
 
 
-const slides = [
-    {
-      key: 1,
-      title: 'selling has never been simpler..',
-      text: 'streamlining your spaza shop',
-      image: require('../assets/ill1.png'),
-      backgroundColor: '#59b2ab',
-    },
-    {
-      key: 2,
-      title: 'easy, fast, secure and cashless transactions',
-      text: 'using snapscan to automate the transaction process',
-      image: require('../assets/ill2.png'),
-      backgroundColor: '#febe29',
-    },
-    {
-      key: 3,
-      title: 'the missing piece to your small business',
-      text: 'join spaza today to start selling the smart way!',
-      image: require('../assets/ill3.png'),
-      backgroundColor: '#22bcb5',
-    }
-  ];
  
-export default class Intro extends React.Component {
+export default function Onboarding1({navigation}) {
 
-    constructor(props){
-        super(props)
-        this.state = {
-            showRealApp: false
-          }
-    }
-
-  _renderItem = ({ item }) => {
     return (
         
         <SafeAreaView style={styles.container}>
 
 <Image source={logo} style={styles.logo} />
 
-                <View style={styles.slide}>
+            <Image source={ill4} />
+            <Text style={styles.title}>let’s get started with snapscan</Text>
+            <Text style={styles.text}>this product works with snapscan for the payments. You need to register as a mechant</Text>
 
-          
 
-            <Image source={item.image} />
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.text}>{item.text}</Text>
-
-            </View>
-
-            <TouchableOpacity style={styles.btn} onPress={this._onDone}>
-            <Text style={styles.btntxt}>Join the family</Text> 
+            <TouchableOpacity style={styles.btn}>
+            <Text style={styles.btntxt} onPress={()=> navigation.navigate("Onboarding2")} >register snapscan</Text> 
             </TouchableOpacity>
             <View style={styles.btnbg}/>
-
 
             </SafeAreaView>
 
     );
-  }
-  _onDone = () => {
-    // User finished the introduction. Show real app through
-    // navigation or simply by controlling state
-    this.setState({ showRealApp: true });
-   
-  }
-  render() {
-    if (this.state.showRealApp) {
-      // return <Login />;
-      return <Signup />;
-    } else {
-      return <AppIntroSlider activeDotStyle={{width: 40, backgroundColor:'#1E2F4D'}} renderItem={this._renderItem} data={slides} onDone={this._onDone}/>;
-    }
-  }
 }
 
 const styles = StyleSheet.create({
