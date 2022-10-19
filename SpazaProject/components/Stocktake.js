@@ -7,18 +7,12 @@ import pattern from '../assets/pattern.png';
 import placeholderGraph from '../assets/placeholderGraph.png';
 
 
-// import * as Font from 'expo-font';
-
-// Font.loadAsync({
-//     // 'light':require('../assets/fonts/MontserratAlternates-Light.ttf'),
-//     // 'regular':require('../assets/fonts/MontserratAlternates-Regular.ttf'),
-//     'medium':require('../assets/fonts/MontserratAlternates-Medium.ttf'),
-//     'semiBold':require('../assets/fonts/MontserratAlternates-SemiBold.ttf'),
-//   });
-
 const height_proportion = '100%';
 
-export default function Dashboard({navigation}) {
+export default function Stocktake({navigation}) {
+
+
+    const [search, onSearch]=useState("");
 
   return (
     // <ScrollView>
@@ -28,34 +22,26 @@ export default function Dashboard({navigation}) {
 
         <View style={styles.container}>
       
-            <Text style={styles.text}>hi there</Text>
-            <Text style={styles.header}>Zandile!</Text>
+        <Text style={styles.header}>Items in your shop</Text>
+            <Text style={styles.text}>this is where you can update prices or quantities</Text>
 
-            <View style={styles.pfp}/>
- 
-            <Image source={card} style={styles.card} />
+            <TextInput
+             style={styles.input}
+             value={search}
+             onChangeText={onSearch}
+             placeholder='search for an item'
+             placeholderTextColor='#616D82'
+            />
 
-            <View style={styles.yellowBlock}>
-            <Text style={styles.header2}>200</Text>
-            <Text style={styles.text2}>items in stock</Text>
-      
-            </View>
-
-            <View style={styles.blueBlock}>
-            <Text style={styles.header3}>30</Text>
-            <Text style={styles.text3}>sales in the month of November</Text>
-            </View>
-            <Image source={pattern} style={styles.pattern} />
            
-            <Text style={styles.headerSection}>Sales history</Text>
-            <Text style={styles.text}>last sale</Text>
+
 
                 <View style={styles.border}>
                     <View style={styles.square}></View>
 
                          <View style={styles.col2}>
-                         <Text style={styles.lastSale1}>2 items</Text>
-                         <Text style={styles.lastSale2}>2 November 2022</Text>
+                         <Text style={styles.lastSale1}>Simba Chips</Text>
+                         <Text style={styles.lastSale2}>12 pcs</Text>
                             </View>    
 
                             <View style={styles.price}>
@@ -65,17 +51,31 @@ export default function Dashboard({navigation}) {
                           
                 </View>
 
-                <Text style={styles.textCat}>this month's sales</Text>
-                <Image source={placeholderGraph} style={styles.placeholderGraph} />
+
+                <View style={styles.border}>
+                    <View style={styles.square}></View>
+
+                         <View style={styles.col2}>
+                         <Text style={styles.lastSale1}>Simba Chips</Text>
+                         <Text style={styles.lastSale2}>12 pcs</Text>
+                            </View>    
+
+                            <View style={styles.price}>
+                            <Text style={styles.lastSale3}>R80.00</Text>
+                            </View>
+            
+                          
+                </View>
 
 
+    
            
 
         </View>
 
         <View style={styles.navigation}>
-        <TouchableOpacity><Text  style={styles.navItemActive}>Home</Text></TouchableOpacity>
-        <TouchableOpacity onPress={()=> navigation.navigate("Stocktake")}><Text  style={styles.navItem}>Stocktake</Text></TouchableOpacity>
+        <TouchableOpacity onPress={()=> navigation.navigate("Dashboard")}><Text  style={styles.navItem}>Home</Text></TouchableOpacity>
+        <TouchableOpacity onPress={()=> navigation.navigate("Stocktake")}><Text  style={styles.navItemActive}>Stocktake</Text></TouchableOpacity>
         <TouchableOpacity onPress={()=> navigation.navigate("SellInstructions")}><Text  style={styles.navItem}>Sell</Text></TouchableOpacity>
 
         <View style={styles.underline}></View>
@@ -169,7 +169,7 @@ borderRadius:55,
     borderRadius:18,
     padding:20,
     marginLeft:200,
-    marginTop:-125,
+    marginTop:-100,
     flexDirection:'row',
 
     shadowColor: '#000000',
@@ -216,21 +216,26 @@ text3:{
     justifyContent:'space-between',
     alignItems: 'left',
 },square:{
-    borderRadius:18,
+    borderTopRightRadius:0,
+    borderTopLeftRadius:18,
+    borderBottomRightRadius:0,
+    borderBottomLeftRadius:18,
     backgroundColor:'#FEB930',
     width:58,
-    height:58,
-    margin:10,
+    height:84,
+    borderRightWidth:1.5,
+    borderColor:'#1E2F4D',
     
 }, lastSale1:{
     color:'#1E2F4D',
-    fontSize:16,
+    fontSize:18,
     marginTop:20,
     textAlign:'left',
+    fontWeight:'bold'
   
 }, lastSale2:{
     color:'#1E2F4D',
-    fontSize:12,
+    fontSize:14,
     textAlign:'left',
   
 },price:{
@@ -241,7 +246,7 @@ text3:{
     borderTopLeftRadius:18,
     borderBottomRightRadius:18,
     borderBottomLeftRadius:0,
-    marginTop:35,
+    marginTop:40,
     zIndex:-1
 }, lastSale3:{
     color:'#1E2F4D',
@@ -273,11 +278,21 @@ text3:{
     fontSize:18
 },underline:{
     position:'absolute',
-    width:50,
+    width:85,
     height:2,
     backgroundColor:'#FEB930',
     marginTop:43,
-    marginLeft:20
+    marginLeft:125
+},    input:{
+    marginTop:30,
+    width:'100%',
+    padding:23,
+    backgroundColor:'#1E2F4D',
+    fontSize:15,
+    fontColor:'#FFFFFF',
+    color:'#FFFFFF',
+    borderRadius:18,
+    placeholderTextColor:'#FFFFFF',
 }
      
 });

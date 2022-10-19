@@ -31,7 +31,7 @@ export default function SellInstructions({navigation}) {
 
             <View style={styles.navigation}>
         <TouchableOpacity onPress={()=> navigation.navigate("Dashboard")}><Text  style={styles.navItem}>Home</Text></TouchableOpacity>
-        <TouchableOpacity><Text  style={styles.navItem}>Stocktake</Text></TouchableOpacity>
+        <TouchableOpacity onPress={()=> navigation.navigate("Stocktake")}><Text  style={styles.navItem}>Stocktake</Text></TouchableOpacity>
         <TouchableOpacity onPress={()=> navigation.navigate("SellInstructions")}><Text  style={styles.navItemActive}>Sell</Text></TouchableOpacity>
 
         <View style={styles.underline}></View>
