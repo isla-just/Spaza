@@ -1,8 +1,8 @@
 import { Camera, CameraType } from 'expo-camera';
 import { useState, useRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
-import MlkitOdt from 'react-native-mlkit-odt';
 import logo from '../assets/logo.png';
+import MlkitOdt, { ObjectDetectorMode } from 'react-native-mlkit-odt';
 
 export default function CameraScreen() {
   const [type, setType] = useState(CameraType.back);
@@ -34,17 +34,24 @@ export default function CameraScreen() {
       setPickedImagePath(data.uri)
       console.log(data.uri);
 
-      finallyOcr()
+      finallyOcr(data.uri)
       
       // const result = await MlkitOdt?.detectFromUri(data.uri);
       // console.log(await MlkitOdt?.detectFromUri(data.uri));
     }
   }
 
-  const finallyOcr = async    () => {
+  const finallyOcr = async    (uri) => {
 
-    if(pickedImagePath!=null){
-      const resultFromUri = await MlkitOdt?.detectFromUri(pickedImagePath);
+    console.log(uri)
+    if(uri!=null && uri != ''){
+      const result = await MlkitOdt.detectFromUri(uri, {
+        detectorMode: ObjectDetectorMode.SINGLE_IMAGE,
+        shouldEnableClassification: true,
+        shouldEnableMultipleObjects: true,
+      });
+
+      console.log(result);
     }else{
       console.log("data not fetched")
     }

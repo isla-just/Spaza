@@ -16,6 +16,7 @@ import Dashboard from './components/Dashboard';
 import SellInstructions from './components/SellInstructions';
 import CameraScreen from './components/CameraScreen';
 import Stocktake from './components/Stocktake';
+import Cart from './components/Cart';
 
 import {db} from "./Firebase";
 import { doc, setDoc, collection, query, orderBy, startAt, endAt, getDoc } from "firebase/firestore";
@@ -35,7 +36,7 @@ export default function App() {
     <NavigationContainer style={styles.container}>
 
       {/* //change this later */}
-    <Stack.Navigator initialRouteName='Login'>
+    <Stack.Navigator initialRouteName='SellInstructions'>
         <Stack.Screen name="Onboarding" component ={Onboarding} options={{headerShown:false}}/>
         <Stack.Screen name="Login" component ={Login} options={{headerShown:false}}/>
         <Stack.Screen name="Signup" component ={Signup} options={{headerShown:false}}/>
@@ -45,6 +46,7 @@ export default function App() {
         <Stack.Screen name="SellInstructions" component ={SellInstructions} options={{headerShown:false}}/>
         <Stack.Screen name="CameraScreen" component ={CameraScreen} options={{headerShown:false}}/>
         <Stack.Screen name="Stocktake" component ={Stocktake} options={{headerShown:false}}/>
+        <Stack.Screen name="Cart" component ={Cart} options={{headerShown:false}}/>
         {/* <Stack.Screen name="Intro" component ={Intro} options={{headerShown:false}}/> */}
     
     </Stack.Navigator>

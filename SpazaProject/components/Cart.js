@@ -9,10 +9,8 @@ import placeholderGraph from '../assets/placeholderGraph.png';
 
 const height_proportion = '100%';
 
-export default function Stocktake({navigation}) {
+export default function Cart({navigation}) {
 
-
-    const [search, onSearch]=useState("");
 
   return (
     // <ScrollView>
@@ -25,13 +23,13 @@ export default function Stocktake({navigation}) {
         <Text style={styles.header}>Items in your shop</Text>
             <Text style={styles.text}>this is where you can update prices or quantities</Text>
 
-            <TextInput
+            {/* <TextInput
              style={styles.input}
              value={search}
              onChangeText={onSearch}
              placeholder='search for an item'
              placeholderTextColor='#616D82'
-            />
+            /> */}
 
            
 
@@ -63,14 +61,12 @@ export default function Stocktake({navigation}) {
                             <View style={styles.price}>
                             <Text style={styles.lastSale3}>R80.00</Text>
                             </View>
-
-                            {/* <TouchableOpacity onPress={()=> navigation.navigate("Cart")} ><Text style={styles.testBtn}>View cart</Text></TouchableOpacity> */}
             
                           
                 </View>
 
 
-        
+    
            
 
         </View>
@@ -300,10 +296,6 @@ text3:{
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.15,
     shadowRadius: 20,
-}, testBtn:{
-    Color:'#1E2F4D',
-    textAlign:'center',
-    marginTop:100
 }
      
 });
