@@ -8,8 +8,12 @@ export default function CameraScreen() {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
 
-  const [pickedImagePath, setPickedImagePath] = useState('');
-  const [result,setResult] = useState("");
+  const [result,setResult] = useState({});
+  const [, setImage] = useState();
+
+  if (result) {
+    console.log('[RESULT]', result);
+  }
 
   if (!permission) {
     // Camera permissions are still loading
@@ -31,41 +35,34 @@ export default function CameraScreen() {
     if( camera ) {
       const options = {quality: 0.5};
       const data = await camera.takePictureAsync(options);
-      setPickedImagePath(data.uri)
+      // setPickedImagePath(data.uri)
+      setResult(data)
+
       console.log(data.uri);
 
-      finallyOcr(data.uri)
-      
-      // const result = await MlkitOdt?.detectFromUri(data.uri);
-      // console.log(await MlkitOdt?.detectFromUri(data.uri));
+      finallyOcr(data)
+    
     }
   }
 
-  const finallyOcr = async    (uri) => {
+  const finallyOcr = async    (data) => {
 
-    console.log(uri)
-    if(uri!=null && uri != ''){
-      const result = await MlkitOdt.detectFromUri(uri, {
-        detectorMode: ObjectDetectorMode.SINGLE_IMAGE,
-        shouldEnableClassification: true,
-        shouldEnableMultipleObjects: true,
-      });
-
-      console.log(result);
-    }else{
-      console.log("data not fetched")
+    if (!data.uri) {
+      throw new Error('oh!');
+    }
+    try {
+      setImage(data);
+      setResult(
+        await MlkitOdt.detectFromUri(data.uri, {
+          detectorMode: 1,
+          shouldEnableClassification: true,
+          shouldEnableMultipleObjects: true,
+        })
+      );
+    } catch (e) {
+      console.error(e);
     }
     }
-
-
-
-  // const __takePicture = async () => {
-  //   if (!camera) return
-  //   const photo = await camera.current.takePictureAsync()
-  //   console.log(photo)
-  //   setPickedImagePath(true)
-   
-  // }
 
   return (
     <View style={styles.container}>

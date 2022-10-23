@@ -19,3 +19,61 @@ export const createUserOnRegister=(user)=>{
     //set a document setDoc(dumument reference, data we want to set, any additional options like merge)
     return setDoc(userRef, userData); //pass the correect one 
 }
+
+//get all sales 
+export const getAllSales= async ()=>{
+
+    const allSales=[];
+
+    //snapshot for our users collection
+    const collectionRef=query(collection(db, "sales"));
+    const collectionSnapshot = await getDocs(collectionRef);
+
+    collectionSnapshot.forEach((doc)=>{
+        
+        allSales.push(doc.data());
+        console.log(doc.data());
+    });
+    return allSales;
+
+}
+
+//get total sales 
+// export const getAllStock= async ()=>{
+
+//     const allStock=[];
+
+//     //snapshot for our users collection
+//     const collectionRef=query(collection(db, "stock"));
+//     const collectionSnapshot = await getDocs(collectionRef);
+
+//     collectionSnapshot.forEach((doc)=>{
+        
+//         allStock.push(doc.data());
+//         console.log(doc.data());
+//     });
+//     return allStock;
+
+// }
+
+export const getAllStockListener=()=>{
+    //returning this reference
+    return query(collection(db, "stock") ,orderBy('quantity', 'asc'));
+}
+
+//add new items
+export const addStock=(data)=>{
+    const collectionRef=collection(db,"stock");
+    return addDoc(collectionRef, data);
+}
+
+//get total sales 
+//get count items in stock
+//monthly sales counter
+//sales for current month
+//get all stock - sort by running low quantity
+//edit stock
+//add new product
+
+//search for item by name
+//get getQRCode
