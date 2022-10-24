@@ -38,23 +38,7 @@ export const getAllSales= async ()=>{
 
 }
 
-//get total sales 
-// export const getAllStock= async ()=>{
-
-//     const allStock=[];
-
-//     //snapshot for our users collection
-//     const collectionRef=query(collection(db, "stock"));
-//     const collectionSnapshot = await getDocs(collectionRef);
-
-//     collectionSnapshot.forEach((doc)=>{
-        
-//         allStock.push(doc.data());
-//         console.log(doc.data());
-//     });
-//     return allStock;
-
-// }
+//CRUD for stock
 
 export const getAllStockListener=()=>{
     //returning this reference
@@ -65,6 +49,11 @@ export const getAllStockListener=()=>{
 export const addStock=(data)=>{
     const collectionRef=collection(db,"stock");
     return addDoc(collectionRef, data);
+}
+
+export const editStock= (uid, data) =>{
+    const stockRef = doc(db, 'stock', uid);
+    return setDoc(stockRef, data, {merge:true});//option to merge and not overrite
 }
 
 //get total sales 

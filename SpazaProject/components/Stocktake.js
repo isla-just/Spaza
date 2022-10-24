@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, Alert,KeyboardAvoidingView, Keyboard, SafeAreaView, ScrollView } from 'react-native';
 import close from '../assets/close.png';
-import card from '../assets/card.png';
+import more from '../assets/more.png';
 import { useFocusEffect } from '@react-navigation/native'
 import { doc, onSnapshot } from 'firebase/firestore'
 
@@ -23,6 +23,7 @@ export default function Stocktake({navigation}) {
     const [price, onPriceChange]=useState("");
 
     const [shouldShow, setShouldShow] = useState(false);
+    const [editShow, setEditShow] = useState(false);
 
     const [stock, setStock]=useState([]);
 
@@ -58,9 +59,6 @@ export default function Stocktake({navigation}) {
         setShouldShow(false)
 
         console.log("successfully added")
-        // navigation.navigate({ 
-        // name:'Waiting',
-        // params:startDate});
     }
 
 
@@ -86,10 +84,13 @@ export default function Stocktake({navigation}) {
 {stock.map((item, index) => (
 
 <View key={index} style={styles.border}>
-
-<View style={styles.square}></View>
+{/* use state selected uid = set that to the value of the button */}
+<TouchableOpacity style={styles.square} >
+<Image source={more} style={styles.more} />
+</TouchableOpacity>
 
 <View style={styles.col2}>
+{/* <Text style={styles.lastSale1}>{item.uid}</Text> */}
 <Text style={styles.lastSale1}>{item.name}</Text>
 <Text style={styles.lastSale2}>{item.quantity} pcs</Text>
    </View>    
@@ -157,6 +158,51 @@ export default function Stocktake({navigation}) {
              placeholder='Item name'
              placeholderTextColor='#616D82'
             />
+
+             <TextInput
+             style={styles.input2}
+             value={quantity}
+             onChangeText={onQuantityChange}
+             placeholder='Quantity'
+             placeholderTextColor='#616D82'
+            />
+
+            <TextInput
+             style={styles.input2}
+             value={price}
+             onChangeText={onPriceChange}
+             placeholder='Price'
+             placeholderTextColor='#616D82'
+             
+             
+            />
+
+            <TouchableOpacity style={styles.btn}>
+            <Text style={styles.btntxt} onPress={AddItem}>Add</Text> 
+            </TouchableOpacity>
+            <View style={styles.btnbg}/>
+
+        </KeyboardAvoidingView>
+
+      
+            </View>
+
+        </View>
+        ) : null}
+
+{editShow ?
+        (
+            <View style={styles.overlay}>
+            <View style={styles.popupBlock}>
+            <TouchableOpacity onPress={() => setEditShow(!editShow)} style={styles.closeBtn}>
+            <Image source={close} style={styles.close} />
+            </TouchableOpacity>
+
+            <Text style={styles.headerPopup}>parse name</Text>
+    
+            <KeyboardAvoidingView 
+        behavior={Platform.OS === "ios" ? "padding":"height"}
+        style={styles.writeTaskWrapper}>
 
              <TextInput
              style={styles.input2}
@@ -339,6 +385,11 @@ text3:{
     height:84,
     borderRightWidth:1.5,
     borderColor:'#1E2F4D',
+    alignItems: 'center'
+}, more:{
+marginTop:32,
+height:20
+
     
 }, lastSale1:{
     color:'#1E2F4D',
@@ -369,8 +420,6 @@ text3:{
     fontSize:20,
     textAlign:'right',
     paddingRight:5
-    
-  
 },placeholderGraph:{
     marginTop:20
 },navigation:{
