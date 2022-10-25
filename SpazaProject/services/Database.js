@@ -2,7 +2,7 @@
 import {db} from "../Firebase"; //firestore instance
 
 //firestore functions
-import { doc, setDoc, Timestamp, collection, getDocs, addDoc, query, onSnapshot, where, orderBy, limit } from "firebase/firestore"; 
+import { doc, setDoc, Timestamp, collection, getDocs, addDoc, query, onSnapshot, where, orderBy, limit, deleteDoc } from "firebase/firestore"; 
 
 //creates a document for the user in our users collection
 export const createUserOnRegister=(user)=>{
@@ -20,21 +20,22 @@ export const createUserOnRegister=(user)=>{
     return setDoc(userRef, userData); //pass the correect one 
 }
 
-//get all sales 
-export const getAllSales= async ()=>{
 
-    const allSales=[];
+//get all stock 
+export const getAllStock= async ()=>{
+
+    const allStock=[];
 
     //snapshot for our users collection
-    const collectionRef=query(collection(db, "sales"));
+    const collectionRef=query(collection(db, "stock"));
     const collectionSnapshot = await getDocs(collectionRef);
 
     collectionSnapshot.forEach((doc)=>{
         
-        allSales.push(doc.data());
-        console.log(doc.data());
+        allStock.push(doc.data());
+        // console.log(doc.data());
     });
-    return allSales;
+    return allStock;
 
 }
 
@@ -54,6 +55,37 @@ export const addStock=(data)=>{
 export const editStock= (uid, data) =>{
     const stockRef = doc(db, 'stock', uid);
     return setDoc(stockRef, data, {merge:true});//option to merge and not overrite
+}
+
+export const deleteStock= (uid) =>{
+    const stockRef = doc(db, 'stock', uid);
+    return deleteDoc(stockRef);
+}
+
+//CRUD FOR SALES WITH
+
+//add new sale
+export const addSale=(data)=>{
+    const collectionRef=collection(db,"sales");
+    return addDoc(collectionRef, data);
+}
+
+//get all sales 
+export const getAllSales= async ()=>{
+
+    const allSales=[];
+
+    //snapshot for our users collection
+    const collectionRef=query(collection(db, "sales"));
+    const collectionSnapshot = await getDocs(collectionRef);
+
+    collectionSnapshot.forEach((doc)=>{
+        
+        allSales.push(doc.data());
+        // console.log(doc.data());
+    });
+    return allSales;
+
 }
 
 //get total sales 

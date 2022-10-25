@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useRef} from 'react';
 import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, Alert,KeyboardAvoidingView, Keyboard, SafeAreaView, ScrollView } from 'react-native';
 import close from '../assets/close.png';
 import more from '../assets/more.png';
@@ -7,14 +7,13 @@ import { doc, onSnapshot } from 'firebase/firestore'
 
 import pattern from '../assets/pattern.png';
 import placeholderGraph from '../assets/placeholderGraph.png';
-import { addStock, getAllStockListener } from '../services/Database';
+import { addStock, getAllStockListener, editStock, deleteStock } from '../services/Database';
 
 
 const height_proportion = '100%';
 const btn_prop = '100%';
 
 export default function Stocktake({navigation}) {
-
 
     const [search, onSearch]=useState("");
 
@@ -24,6 +23,11 @@ export default function Stocktake({navigation}) {
 
     const [shouldShow, setShouldShow] = useState(false);
     const [editShow, setEditShow] = useState(false);
+
+    const [activeId, setActiveId] = useState(0);
+    const [activeName, setActiveName] = useState("");
+    const [activeQuantity, setActiveQuantity] = useState(0);
+    const [activePrice, setActivePrice] = useState(0);
 
     const [stock, setStock]=useState([]);
 
@@ -57,8 +61,25 @@ export default function Stocktake({navigation}) {
         // console.log(comp.uid)
         await addStock({name, quantity, price})
         setShouldShow(false)
-
         console.log("successfully added")
+    }
+
+    const EditItem= async ()=>{
+
+        await editStock(activeId, {name:activeName, quantity:activeQuantity, price:activePrice});
+        // setNewTag();
+        setEditShow(false)
+        setActivePrice(0)
+        setActiveQuantity(0)
+        setActiveId(0)
+        setActiveName("")
+    }
+
+    const DeleteItem = async ()=>{
+        // console.log(comp.uid)
+        await deleteStock(activeId)
+        setEditShow(false)
+        console.log("has been deleted")
     }
 
 
@@ -85,7 +106,8 @@ export default function Stocktake({navigation}) {
 
 <View key={index} style={styles.border}>
 {/* use state selected uid = set that to the value of the button */}
-<TouchableOpacity style={styles.square} >
+
+<TouchableOpacity style={styles.square} id={item.uid} onPress={() => {setEditShow(!editShow); setActiveId(item.uid); setActiveName(item.name); setActivePrice(item.price); setActiveQuantity(item.quantity) }} >
 <Image source={more} style={styles.more} />
 </TouchableOpacity>
 
@@ -101,22 +123,6 @@ export default function Stocktake({navigation}) {
     
         </View>
 ))}
-
-{/* 
-                <View style={styles.border}>
-                    <View style={styles.square}></View>
-
-                         <View style={styles.col2}>
-                         <Text style={styles.lastSale1}>Simba Chips</Text>
-                         <Text style={styles.lastSale2}>12 pcs</Text>
-                            </View>    
-
-                            <View style={styles.price}>
-                            <Text style={styles.lastSale3}>R80.00</Text>
-                            </View>
-            
-                          
-                </View> */}
 
 
 
@@ -177,7 +183,7 @@ export default function Stocktake({navigation}) {
              
             />
 
-            <TouchableOpacity style={styles.btn}>
+            <TouchableOpacity style={styles.btnPopup}>
             <Text style={styles.btntxt} onPress={AddItem}>Add</Text> 
             </TouchableOpacity>
             <View style={styles.btnbg}/>
@@ -198,34 +204,36 @@ export default function Stocktake({navigation}) {
             <Image source={close} style={styles.close} />
             </TouchableOpacity>
 
-            <Text style={styles.headerPopup}>parse name</Text>
+            <Text style={styles.headerPopup}>{activeName}</Text>
     
             <KeyboardAvoidingView 
         behavior={Platform.OS === "ios" ? "padding":"height"}
         style={styles.writeTaskWrapper}>
 
+<Text style={styles.smol}>Quantity</Text>
              <TextInput
              style={styles.input2}
-             value={quantity}
-             onChangeText={onQuantityChange}
-             placeholder='Quantity'
-             placeholderTextColor='#616D82'
+             value={activeQuantity}
+             onChangeText={setActiveQuantity}
             />
+
+
+<Text style={styles.smol}>Price</Text>
 
             <TextInput
              style={styles.input2}
-             value={price}
-             onChangeText={onPriceChange}
-             placeholder='Price'
-             placeholderTextColor='#616D82'
-             
-             
+             value={activePrice}
+             onChangeText={setActivePrice}
             />
 
-            <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btntxt} onPress={AddItem}>Add</Text> 
+            <TouchableOpacity style={styles.btnPopup}>
+            <Text style={styles.btntxt} onPress={EditItem}>Save changes</Text> 
             </TouchableOpacity>
-            <View style={styles.btnbg}/>
+            <View style={styles.btnbgPopup}/>
+
+            <TouchableOpacity>
+            <Text style={styles.deleteTxt} onPress={DeleteItem}>delete item</Text> 
+            </TouchableOpacity>
 
         </KeyboardAvoidingView>
 
@@ -490,10 +498,14 @@ height:20
         marginLeft:8
       }, overlay:{
         position:'absolute',
-        backgroundColor:'#00000002',
+        backgroundColor:'#00000020 ',
         width:'100%',
         height:'100%',
+     
+        flex:1,
+        flexDirection:'row',
         alignItems:'center',
+        justifyContent:'center'
       },popupBlock:{
         position:'absolute',
         width:'85%',
@@ -504,14 +516,13 @@ height:20
         shadowOpacity: 0.15,
         shadowRadius: 20,
         padding:30,
-        marginTop:160,
     
       }, close:{
         alignSelf:'flex-end'
       }, headerPopup:{
         color:'#1E2F4D',
         fontSize:20,
-        marginTop:20,
+        marginTop:-20,
         width:'100%',
         fontWeight:'bold',
         textAlign:'center'
@@ -533,6 +544,35 @@ height:20
         width:40,
         height:40,
         alignSelf:'flex-end'
+      }, btnPopup:{
+        width: btn_prop,
+        padding: 20,
+        backgroundColor: 'transparent',
+        borderColor:'#1E2F4D',
+        borderWidth:1.5,
+        borderRadius:20,
+        marginTop:30
+      },btnbgPopup:{
+        width: btn_prop,
+        height:62, 
+        backgroundColor: '#FEB930',
+        borderRadius:20,
+        zIndex:-1,
+        marginTop:-53,
+        marginLeft:8
+      },deleteTxt:{
+        textAlign:'center',
+        fontSize:15,
+        marginTop:20,
+        textDecorationLine: 'underline',
+        color:'#1E2F4D'
+
+      }, smol:{
+        fontSize:12,
+        color:'#1E2F4D',
+        marginTop:20,
+        marginBottom:-30
+
       }
      
 });
