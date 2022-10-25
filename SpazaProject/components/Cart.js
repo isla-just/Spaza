@@ -73,6 +73,7 @@ export default function Cart({route, navigation}) {
 
         await addSale({date, items, totalPrice})
         console.log("successfully added")
+        navigation.navigate("SnapCode");
     }
 
     const populateDropdown = async ()=>{

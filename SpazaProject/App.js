@@ -17,6 +17,7 @@ import SellInstructions from './components/SellInstructions';
 import CameraScreen from './components/CameraScreen';
 import Stocktake from './components/Stocktake';
 import Cart from './components/Cart';
+import SnapCode from './components/SnapCode';
 
 import {db} from "./Firebase";
 import { doc, setDoc, collection, query, orderBy, startAt, endAt, getDoc } from "firebase/firestore";
@@ -24,6 +25,7 @@ import { doc, setDoc, collection, query, orderBy, startAt, endAt, getDoc } from 
 //firebase
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './Firebase';
+import Success from './components/Success';
 
 //add longed in auth
 
@@ -47,6 +49,8 @@ export default function App() {
         <Stack.Screen name="CameraScreen" component ={CameraScreen} options={{headerShown:false}}/>
         <Stack.Screen name="Stocktake" component ={Stocktake} options={{headerShown:false}}/>
         <Stack.Screen name="Cart" component ={Cart} options={{headerShown:false}}/>
+        <Stack.Screen name="SnapCode" component ={SnapCode} options={{headerShown:false}}/>
+        <Stack.Screen name="Success" component ={Success} options={{headerShown:false}}/>
         {/* <Stack.Screen name="Intro" component ={Intro} options={{headerShown:false}}/> */}
     
     </Stack.Navigator>

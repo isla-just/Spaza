@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import logo from '../assets/logo.png';
-import ill4 from '../assets/ill4.png';
+import ill4 from '../assets/illSuccess.png';
 
 
  
@@ -11,7 +11,7 @@ const txt_prop = '90%';
 
 
  
-export default function SnapCode({navigation}) {
+export default function Success({navigation}) {
 
     return (
         
@@ -19,18 +19,15 @@ export default function SnapCode({navigation}) {
 
 <Image source={logo} style={styles.logo} />
 
-       
-            <Text style={styles.title}>get the shopper to scan this QR code</Text>
-            <Text style={styles.text}>and snapscan will do the rest</Text>
+            <Image source={ill4} />
+            <Text style={styles.title}>payment successful</Text>
+            <Text style={styles.text}>Snapscan has processed your payment</Text>
 
-            <Text style={styles.title}>pull snapcode</Text>
 
             <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btntxt} onPress={()=> navigation.navigate("Success")} >Done</Text> 
+            <Text style={styles.btntxt} onPress={()=> navigation.navigate("Dashboard")} >Back home</Text> 
             </TouchableOpacity>
             <View style={styles.btnbg}/>
-
-        
 
             </SafeAreaView>
 
@@ -90,7 +87,7 @@ const styles = StyleSheet.create({
         borderColor:'#1E2F4D',
         borderWidth:1.5,
         borderRadius:20,
-        marginTop:20
+        marginTop:60
       }, btntxt:{
         textAlign:'center',
         fontSize:15
