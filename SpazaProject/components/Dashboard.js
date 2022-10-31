@@ -3,8 +3,13 @@ import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, A
 import logo from '../assets/logo.png';
 import card from '../assets/card.png';
 
+import { useFocusEffect } from '@react-navigation/native'
+import { doc, onSnapshot } from 'firebase/firestore'
+
 import pattern from '../assets/pattern.png';
 import placeholderGraph from '../assets/placeholderGraph.png';
+
+import { addStock, getAllStockListener } from '../services/Database';
 
 
 // import * as Font from 'expo-font';
@@ -20,13 +25,59 @@ const height_proportion = '100%';
 
 export default function Dashboard({navigation}) {
 
+    const [stock, setStock]=useState([]);
+    const [stockQuantity, setStockQuantity]=useState(0);
+
+    const GetStockCounter = async ()=>{
+        let stockTotal=0
+        for(var i=0; i<stock.length; i++){
+            stockTotal = stockTotal + parseInt(stock[i].quantity)
+        }
+
+        setStockQuantity(stockTotal)
+    }
+
+
+
+  useFocusEffect(
+    
+    React.useCallback(()=>{
+
+        GetStockCounter()
+
+      const collectionRef=getAllStockListener();
+
+      const unsub = onSnapshot(collectionRef, (snapshot)=>{
+        let stocks=[];
+    
+        snapshot.forEach((doc)=>{
+
+            let stockData={...doc.data(), uid:doc.id}
+
+            stocks.push(stockData);
+        })
+
+        setStock(stocks);
+    })
+
+    return()=>{
+        //do something here when the sacreen is focussed
+        unsub();
+      
+    }
+
+  
+    },[stock])
+    )
+    
+
   return (
     // <ScrollView>
 
 
     <SafeAreaView style={styles.container}>
 
-        <View style={styles.container}>
+        <ScrollView style={styles.container2}>
       
             <Text style={styles.text}>hi there</Text>
             <Text style={styles.header}>Zandile!</Text>
@@ -36,7 +87,7 @@ export default function Dashboard({navigation}) {
             <Image source={card} style={styles.card} />
 
             <View style={styles.yellowBlock}>
-            <Text style={styles.header2}>200</Text>
+            <Text style={styles.header2}>{stockQuantity}</Text>
             <Text style={styles.text2}>items in stock</Text>
       
             </View>
@@ -68,10 +119,11 @@ export default function Dashboard({navigation}) {
                 <Text style={styles.textCat}>this month's sales</Text>
                 <Image source={placeholderGraph} style={styles.placeholderGraph} />
 
-
+            <Text style={styles.headerSection}>Stock running low</Text>
+            <Text style={styles.text}>add these to your upcoming shopping list</Text>
            
 
-        </View>
+        </ScrollView>
 
         <View style={styles.navigation}>
         <TouchableOpacity><Text  style={styles.navItemActive}>Home</Text></TouchableOpacity>
@@ -94,9 +146,16 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FFFFFF',
         width:'100%',
-        padding:40, 
+        padding:-40, 
         alignItems: 'center',
 
+      },        container2: {
+        flex: 1,
+        backgroundColor: '#FFFFFF',
+        width:'100%',
+        padding:40, 
+      },card:{
+        marginLeft:-40
       },
       half1:{
         width: '50%',
@@ -120,7 +179,8 @@ const styles = StyleSheet.create({
         color:'#1E2F4D',
         fontSize:18,
         marginTop:5,
-        alignSelf:'flex-start'
+        alignSelf:'flex-start',
+        width:'100%',
     },    textCat:{
         color:'#1E2F4D',
         fontSize:18,
@@ -168,7 +228,7 @@ borderRadius:55,
     width:230,
     borderRadius:18,
     padding:20,
-    marginLeft:200,
+    marginLeft:135,
     marginTop:-125,
     flexDirection:'row',
 
@@ -195,7 +255,7 @@ text3:{
     marginLeft:-140,
 }, pattern:{
     marginTop:-130,
-    marginLeft:200,
+    marginLeft:160,
     zIndex:-1
 },headerSection:{
     color:'#1E2F4D',
@@ -249,7 +309,8 @@ text3:{
     textAlign:'left',
   
 },placeholderGraph:{
-    marginTop:20
+    marginTop:20,
+    width:'100%'
 },navigation:{
     backgroundColor:'#1E2F4D',
     width:'100%',

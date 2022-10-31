@@ -38,7 +38,7 @@ export default function App() {
     <NavigationContainer style={styles.container}>
 
       {/* //change this later */}
-    <Stack.Navigator initialRouteName='SellInstructions'>
+    <Stack.Navigator initialRouteName='Dashboard'>
         <Stack.Screen name="Onboarding" component ={Onboarding} options={{headerShown:false}}/>
         <Stack.Screen name="Login" component ={Login} options={{headerShown:false}}/>
         <Stack.Screen name="Signup" component ={Signup} options={{headerShown:false}}/>
@@ -52,7 +52,6 @@ export default function App() {
         <Stack.Screen name="SnapCode" component ={SnapCode} options={{headerShown:false}}/>
         <Stack.Screen name="Success" component ={Success} options={{headerShown:false}}/>
         {/* <Stack.Screen name="Intro" component ={Intro} options={{headerShown:false}}/> */}
-    
     </Stack.Navigator>
 
     </NavigationContainer>
