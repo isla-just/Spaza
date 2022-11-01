@@ -39,6 +39,7 @@ export const getAllStock= async ()=>{
 
 }
 
+
 //CRUD for stock
 
 export const getAllStockListener=()=>{

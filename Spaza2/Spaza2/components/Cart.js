@@ -31,8 +31,6 @@ export default function Cart({route, navigation}) {
         stocks.push(item)
         })
 
-        //fetches all stock
-        console.log(stocks)
 
 
           //runs to determine one item
@@ -46,68 +44,13 @@ export default function Cart({route, navigation}) {
               tempArr.push({name: stocks[i].name, price: stocks[i].price, quantity:1})
               // setStock([...stock,  {name: stocks[i].name, price: stocks[i].price, quantity:1}])
             }else{
-              console.log("not found")
+             //not found
             }
           }
-          console.log(tempArr)
+    
         setStock(tempArr)
     }
 
-
-    // //checks the whole string for anything matching with firebase stock
-    // useFocusEffect(
-    
-    //   React.useCallback(()=>{
-
-
-    //   console.log(items)
-  
-    //     const collectionRef=getAllStockListener();
-  
-    //     const unsub = onSnapshot(collectionRef, (snapshot)=>{
-    //       let stocks=[];
-      
-    //       snapshot.forEach((doc)=>{
-  
-    //           let stockData={...doc.data(), uid:doc.id}
-  
-    //           stocks.push(stockData);
-    //       })
-
-    //       //runs until all stock is compared - 5X
-    //       for(var j=0; j<stocks.length+1; j++){
-    //         console.log("ran times:" + j)
-
-    //       //runs to determine one item
-    //       for(var i=0; i<stocks.length; i++){
-    //         var substring = stocks[i].name
-
-
-    //         if(items.toLowerCase().includes(substring.toLowerCase()) || items.toLowerCase() == substring.toLowerCase()){
-
-    //           console.log("match found" + stocks[i].name)
-
-    //           //appending to the stock array
-    //           setStock([...stock,  {name: stocks[i].name, price: stocks[i].price, quantity:1}])
-    //         }else{
-    //           console.log("not found")
-    //         }
-    //       }
-
-    //       console.log("stock____"+stock)
-    //     }
-    //     console.log(stock)
- 
-    //   })
-    //   return()=>{
-    //     //do something here when the sacreen is focussed
-    //     unsub();
-      
-    // }
-
-  
-    // },[])
-    // )
 
     const [data, setData]=useState([]);
     const [selected, setSelected] = React.useState("");
@@ -126,8 +69,8 @@ export default function Cart({route, navigation}) {
         var new_Name = result[0];
         var new_Price = result[1];
 
-        console.log(new_Name)
-        console.log(new_Price)
+        // console.log(new_Name)
+        // console.log(new_Price)
 
         setNewName(new_Name);
         setNewPrice(new_Price);
@@ -138,7 +81,6 @@ export default function Cart({route, navigation}) {
           {name: new_Name, price: new_Price, quantity: 1}
         ]);
 
-        console.log("this is your stock----"+stock)
 
         //set use states
         
@@ -161,7 +103,7 @@ export default function Cart({route, navigation}) {
         for(var i=0; i<stock.length; i++){
             
         items.push(stock[i].name)
-          console.log(items)
+          // console.log(items)
         }
 
         await addSale({date, items, totalPrice})
@@ -188,17 +130,18 @@ export default function Cart({route, navigation}) {
         for(var i=0; i<stock.length; i++){
 
           tempCalc = tempCalc + (parseInt(stock[i].price)*parseInt(stock[i].quantity))
-          console.log(tempCalc)
+  
         }
 
-        console.log("this is your stock----"+stock)
+        console.log("below is your stock")
+        console.log(stock)
 
         setTotalPrice(tempCalc)
 
         // setStock({name, quantity, price})
 populateDropdown()
 compareFirebase()
-      },[newName]);
+      },[]);
 
 
     // const [aiReturned, setAiReturned]=useState({

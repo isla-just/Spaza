@@ -19,11 +19,11 @@ export default function Onboarding1({navigation}) {
 
             <Image source={ill4} />
             <Text style={styles.title}>let’s get started with snapscan</Text>
-            <Text style={styles.text}>this product works with snapscan for the payments. You need to register as a mechant</Text>
+            <Text style={styles.text}>register as a merchant so you can use snapscan for the payments. Keep an eye out for your QR code and screenshot it</Text>
 
 
             <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btntxt} onPress={()=> navigation.navigate("Onboarding2")} >register snapscan</Text> 
+            <Text style={styles.btntxt} onPress={()=> navigation.navigate("Onboarding2")} >I've registered!</Text> 
             </TouchableOpacity>
             <View style={styles.btnbg}/>
 

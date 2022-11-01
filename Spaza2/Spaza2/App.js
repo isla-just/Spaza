@@ -38,7 +38,7 @@ export default function App() {
     <NavigationContainer style={styles.container}>
 
       {/* //change this later */}
-    <Stack.Navigator initialRouteName='Dashboard'>
+    <Stack.Navigator initialRouteName='Login'>
         <Stack.Screen name="Onboarding" component ={Onboarding} options={{headerShown:false}}/>
         <Stack.Screen name="Login" component ={Login} options={{headerShown:false}}/>
         <Stack.Screen name="Signup" component ={Signup} options={{headerShown:false}}/>
