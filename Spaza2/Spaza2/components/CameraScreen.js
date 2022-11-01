@@ -34,13 +34,18 @@ async function callGoogleVisionAsync(image) {
     body: JSON.stringify(body),
   });
   const result = await response.json();
-  console.log(result)
-  // console.log('callGoogleVisionAsync -> result', result);
+  console.log('callGoogleVisionAsync -> result', result);
 
   items={name:"Apple", quantity:1, price:20}
 
-  return result.responses[0].labelAnnotations[0].description;
+  const detectedText = result.responses[0].fullTextAnnotation;
+
+  console.log(detectedText);
+  return detectedText
+    ? detectedText
+    : { text: "This image doesn't contain any text!" };
 }
+
 
 export default function CameraScreen({navigation}) {
   const [image, setImage] = React.useState(null);
@@ -59,6 +64,8 @@ export default function CameraScreen({navigation}) {
     }
   };
 
+  
+
   const takePictureAsync = async () => {
     const { cancelled, uri, base64 } = await ImagePicker.launchCameraAsync({
       base64: true,
@@ -67,8 +74,15 @@ export default function CameraScreen({navigation}) {
     if (!cancelled) {
       setImage(uri);
       setStatus('Loading...');
-      
-      const googleText = await onSubmit(result.base64)
+
+      try {
+        const result = await callGoogleVisionAsync(base64);
+        console.log(result);
+        // setStatus(result);
+      } catch (error) {
+        setStatus(`Error: ${error.message}`);
+      }
+
     } else {
       setImage(null);
       setStatus(null);
@@ -83,7 +97,7 @@ export default function CameraScreen({navigation}) {
         <>
           {image && <Image style={styles.image} source={{ uri: image }} />}
           {status && <Text style={styles.text}>{status}</Text>}
-          <Button onPress={callGoogleVisionAsync} title="Take a Picture" />
+          <Button onPress={takePictureAsync} title="Take a Picture" />
           <Button  onPress={()=> navigation.navigate("Cart", {
             name: "Apple",
             quantity: 12,
