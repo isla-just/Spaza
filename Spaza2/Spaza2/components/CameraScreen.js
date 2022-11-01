@@ -5,7 +5,7 @@ import { Button, Image, StyleSheet, Text, View } from 'react-native';
 const API_KEY = 'AIzaSyD7dX-lQ1mnaMios3A_fk8Z8OOVqnyRWHc';
 const API_URL = `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`;
 
-var items =[];
+var items ="";
 
 async function callGoogleVisionAsync(image) {
 
@@ -36,9 +36,9 @@ async function callGoogleVisionAsync(image) {
   const result = await response.json();
   console.log('callGoogleVisionAsync -> result', result);
 
-  items={name:"Apple", quantity:1, price:20}
+  items = result.responses[0].fullTextAnnotation.text;
 
-  const detectedText = result.responses[0].fullTextAnnotation;
+  const detectedText = result.responses[0].fullTextAnnotation.text;
 
   console.log(detectedText);
   return detectedText
@@ -98,11 +98,7 @@ export default function CameraScreen({navigation}) {
           {image && <Image style={styles.image} source={{ uri: image }} />}
           {status && <Text style={styles.text}>{status}</Text>}
           <Button onPress={takePictureAsync} title="Take a Picture" />
-          <Button  onPress={()=> navigation.navigate("Cart", {
-            name: "Apple",
-            quantity: 12,
-            price: 15
-          })}title="Proceed to sale" />
+          <Button  onPress={()=> navigation.navigate("Cart", items)}title="Proceed to sale" />
         </>
       )}
     </View>

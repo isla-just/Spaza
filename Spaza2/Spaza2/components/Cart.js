@@ -7,15 +7,108 @@ import placeholderGraph from '../assets/placeholderGraph.png';
 import { addSale, getAllStock } from '../services/Database';
 import SelectList from 'react-native-dropdown-select-list'
 
+import { useFocusEffect } from '@react-navigation/native'
+import { doc, onSnapshot } from 'firebase/firestore'
+import { addStock, getAllStockListener } from '../services/Database';
 
 
 const height_proportion = '100%';
 
 export default function Cart({route, navigation}) {
 
-    const { name, quantity, price } = route.params;
+    const items = route.params;
+    const [allStock, setAllStock]=useState([]);
+    var tempArr =[]
 
-    const [stock, setStock]=useState([{name: name, price: price, quantity: quantity}]);
+    const [stock, setStock]=useState([]);
+
+    const compareFirebase = async ()=>{
+
+      let stocks=[];
+      const stocksDB = await getAllStock();
+
+      let newArray = stocksDB.map((item) => {
+        stocks.push(item)
+        })
+
+        //fetches all stock
+        console.log(stocks)
+
+
+          //runs to determine one item
+          for(var i=0; i<stocks.length; i++){
+            var substring = stocks[i].name
+
+            if(items.toLowerCase().includes(substring.toLowerCase()) || items.toLowerCase() == substring.toLowerCase()){
+
+              console.log("match found" + stocks[i].name)
+              //appending to the stock array
+              tempArr.push({name: stocks[i].name, price: stocks[i].price, quantity:1})
+              // setStock([...stock,  {name: stocks[i].name, price: stocks[i].price, quantity:1}])
+            }else{
+              console.log("not found")
+            }
+          }
+          console.log(tempArr)
+        setStock(tempArr)
+    }
+
+
+    // //checks the whole string for anything matching with firebase stock
+    // useFocusEffect(
+    
+    //   React.useCallback(()=>{
+
+
+    //   console.log(items)
+  
+    //     const collectionRef=getAllStockListener();
+  
+    //     const unsub = onSnapshot(collectionRef, (snapshot)=>{
+    //       let stocks=[];
+      
+    //       snapshot.forEach((doc)=>{
+  
+    //           let stockData={...doc.data(), uid:doc.id}
+  
+    //           stocks.push(stockData);
+    //       })
+
+    //       //runs until all stock is compared - 5X
+    //       for(var j=0; j<stocks.length+1; j++){
+    //         console.log("ran times:" + j)
+
+    //       //runs to determine one item
+    //       for(var i=0; i<stocks.length; i++){
+    //         var substring = stocks[i].name
+
+
+    //         if(items.toLowerCase().includes(substring.toLowerCase()) || items.toLowerCase() == substring.toLowerCase()){
+
+    //           console.log("match found" + stocks[i].name)
+
+    //           //appending to the stock array
+    //           setStock([...stock,  {name: stocks[i].name, price: stocks[i].price, quantity:1}])
+    //         }else{
+    //           console.log("not found")
+    //         }
+    //       }
+
+    //       console.log("stock____"+stock)
+    //     }
+    //     console.log(stock)
+ 
+    //   })
+    //   return()=>{
+    //     //do something here when the sacreen is focussed
+    //     unsub();
+      
+    // }
+
+  
+    // },[])
+    // )
+
     const [data, setData]=useState([]);
     const [selected, setSelected] = React.useState("");
 
@@ -45,7 +138,7 @@ export default function Cart({route, navigation}) {
           {name: new_Name, price: new_Price, quantity: 1}
         ]);
 
-        console.log(stock)
+        console.log("this is your stock----"+stock)
 
         //set use states
         
@@ -93,17 +186,18 @@ export default function Cart({route, navigation}) {
      
         var tempCalc = 0
         for(var i=0; i<stock.length; i++){
-            
-
 
           tempCalc = tempCalc + (parseInt(stock[i].price)*parseInt(stock[i].quantity))
           console.log(tempCalc)
         }
 
+        console.log("this is your stock----"+stock)
+
         setTotalPrice(tempCalc)
 
         // setStock({name, quantity, price})
 populateDropdown()
+compareFirebase()
       },[newName]);
 
 
