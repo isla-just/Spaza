@@ -1,48 +1,11 @@
 import React,{useState} from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { Button, Image, StyleSheet, Text, View } from 'react-native';
-
-const API_KEY = 'AIzaSyD7dX-lQ1mnaMios3A_fk8Z8OOVqnyRWHc';
-const API_URL = `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`;
-
-var items =[];
-
-async function callGoogleVisionAsync(image) {
-
-  const body = {
-    requests: [
-      {
-        image: {
-          content: image,
-        },
-        features: [
-          {
-            type: 'LABEL_DETECTION',
-            maxResults: 5,
-          },
-        ],
-      },
-    ],
-  };
-
-  const response = await fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  });
-  const result = await response.json();
-  console.log('callGoogleVisionAsync -> result', result);
-
-  items={name:"Apple", quantity:1, price:20}
-
-  return result.responses[0].labelAnnotations[0].description;
-}
+import { callToClarifai } from '../services/ClarifaiService'
 
 export default function CameraScreen({navigation}) {
   const [image, setImage] = React.useState(null);
+  const [url, setUrl] = useState(null);
   const [status, setStatus] = React.useState(null);
   const [permissions, setPermissions] = React.useState(false);
   
@@ -64,15 +27,19 @@ export default function CameraScreen({navigation}) {
     });
 
     if (!cancelled) {
-      setImage(uri);
+      setImage(`data:image/jpg;base64,${uri.base64}`);
       setStatus('Loading...');
-      try {
-        const result = await callGoogleVisionAsync(base64);
-        setStatus(result);
-        console.log(items)
-      } catch (error) {
-        setStatus(`Error: ${error.message}`);
-      }
+
+
+    callToClarifai(uri.base64);
+    console.log(callToClarifai(uri.base64))
+      // try {
+      //   const result = await callGoogleVisionAsync(base64);
+      //   setStatus(result);
+      //   console.log(items)
+      // } catch (error) {
+      //   setStatus(`Error: ${error.message}`);
+      // }
     } else {
       setImage(null);
       setStatus(null);
