@@ -1,17 +1,50 @@
 import React,{useState} from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView, TextInput, ActivityIndicator, Button } from 'react-native';
 import logo from '../assets/logo.png';
 import ill5 from '../assets/ill5.png';
- 
+import * as ImagePicker from 'expo-image-picker';
+import {getStorage, ref, uploadBytes} from 'firebase/storage'
+import { updateUserData } from '../services/Database';
+import { auth } from '../Firebase';
+
+
 const height_proportion = '100%';
 const btn_prop = '80%';
 const txt_prop = '90%';
-
-
  
 export default function Onboarding2({navigation}) {
 
-  const [merchant, onMerchantChange]=useState("");
+
+  const [image, setImage] = useState(null)
+  const [uploading, setUploading] = useState(false)
+  const pickImage = async () => {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All, 
+        allowsEditing: true,
+        aspect: [4, 4],
+        quality: 1, 
+      });
+  
+      console.log(result);
+  
+      if (!result.cancelled) {
+        setImage(result.uri);
+        console.log(result.uri);
+
+        const storage = getStorage();
+        const storageRef = ref(storage, 'Images/'+result.uri);
+
+        uploadBytes(storageRef, result.uri).then((snapshot) => {
+          console.log('Uploaded a blob or file!');
+          updateUserData(auth.currentUser.uid,{merchant_id:result.uri});
+        });
+
+
+       
+    
+      }
+    
+    };
 
     return (
         
@@ -21,23 +54,18 @@ export default function Onboarding2({navigation}) {
 
 <Image source={logo} style={styles.logo} />
 
-            <Image source={ill5} />
+            {/* <Image source={ill5} />
             <Text style={styles.title}>looking for your snapscan account</Text>
             <Text style={styles.text}>your merchant name is your snapscan username</Text>
 
-
-            <TextInput
-             style={styles.input}
-             value={merchant}
-             onChangeText={onMerchantChange}
-             placeholder='merchant name'
-             placeholderTextColor='#616D82'
-            />
-
             <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btntxt} onPress={()=> navigation.navigate("Dashboard")} >that's me!</Text> 
+            <Text style={styles.btntxt} >Select Image</Text> 
             </TouchableOpacity>
-            <View style={styles.btnbg}/>
+            <View style={styles.btnbg}/> */}
+
+            {image && <Image source={{uri: image}} style={{width: 170 , height: 200}}/>}
+      <Button title='Select Image' onPress={pickImage} />
+
 
             </View>
 

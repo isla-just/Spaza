@@ -12,7 +12,7 @@ export const createUserOnRegister=(user)=>{
     //create data document
     const userData={
         email:user.email,
-        merchant_id:1,
+        merchant_id:"",
         uid:user.uid,
         language:"English"
     }
@@ -88,6 +88,31 @@ export const getAllSales= async ()=>{
     return allSales;
 
 }
+
+
+//update profile with QR 
+export const updateUserData =(uid, data)=>{
+    const userRef = doc(db, "users", uid);
+    return setDoc(userRef, data, {merge:true}); // add the option to merge document andnot overwrite 
+}
+
+export const getUserQR=async (id)=>{
+    
+    const querySnapshot = await getDoc(collection(db, 'users'), where("uid", "==", id));
+    var allData=[];
+    // const date = dateCreated.toDate().toDateString()
+
+    querySnapshot.forEach((doc)=>{
+
+    const userData={
+        merchant_id:doc.data().merchant_id,
+        uid:doc.data().uid
+    }
+
+    allData=userData;
+})
+}
+
 
 //get total sales 
 //get count items in stock
