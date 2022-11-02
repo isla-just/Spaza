@@ -1,6 +1,6 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import { Button, Image, StyleSheet, Text, View } from 'react-native';
+import { Button, Image, StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 
 const API_KEY = 'AIzaSyD7dX-lQ1mnaMios3A_fk8Z8OOVqnyRWHc';
 const API_URL = `https://vision.googleapis.com/v1/images:annotate?key=${API_KEY}`;
@@ -48,8 +48,10 @@ async function callGoogleVisionAsync(image) {
 
 
 export default function CameraScreen({navigation}) {
+
+  const [load, setLoad] = React.useState(true);
   const [image, setImage] = React.useState(null);
-  const [status, setStatus] = React.useState(null);
+  const [status, setStatus] = React.useState("Analysing image");
   const [permissions, setPermissions] = React.useState(false);
   
 
@@ -64,6 +66,13 @@ export default function CameraScreen({navigation}) {
     }
   };
 
+  useEffect(() => {
+    askPermissionsAsync();
+    takePictureAsync()
+  }, []);
+
+  
+
   
 
   const takePictureAsync = async () => {
@@ -73,12 +82,17 @@ export default function CameraScreen({navigation}) {
 
     if (!cancelled) {
       setImage(uri);
-      setStatus('Loading...');
 
       try {
         const result = await callGoogleVisionAsync(base64);
         console.log(result);
         // setStatus(result);
+
+          navigation.navigate("Cart", items)
+          console.log("should navigate")
+
+       
+
       } catch (error) {
         setStatus(`Error: ${error.message}`);
       }
@@ -91,16 +105,12 @@ export default function CameraScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      {permissions === false ? (
-        <Button onPress={askPermissionsAsync} title="Ask permissions" />
-      ) : (
-        <>
-          {image && <Image style={styles.image} source={{ uri: image }} />}
+
+      <ActivityIndicator size="large" color="#FEB930" />
+          {/* {image && <Image style={styles.image} source={{ uri: image }} />} */}
           {status && <Text style={styles.text}>{status}</Text>}
-          <Button onPress={takePictureAsync} title="Take a Picture" />
-          <Button  onPress={()=> navigation.navigate("Cart", items)}title="Proceed to sale" />
-        </>
-      )}
+          {/* <Button onPress={takePictureAsync} title="Take a Picture" /> */}
+          {/* <Button  onPress={()=> navigation.navigate("Cart", items)}title="Proceed to sale" /> */}
     </View>
   );
 }
@@ -118,5 +128,6 @@ const styles = StyleSheet.create({
   },
   text: {
     margin: 5,
+    color:'#1E2F4D'
   },
 });

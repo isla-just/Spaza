@@ -3,6 +3,9 @@ import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, A
 import logo from '../assets/logo.png';
 import card from '../assets/card.png';
 
+import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
+
+
 import { useFocusEffect } from '@react-navigation/native'
 import { doc, onSnapshot } from 'firebase/firestore'
 
@@ -25,21 +28,29 @@ const height_proportion = '100%';
 
 export default function Dashboard({navigation, route}) {
 
+    // const data=[]
+    const [data, setData]=useState([]);
+    const [lowStock, setLowStock]=useState([]);
     const [stock, setStock]=useState([]);
     const [sales, setSales]=useState([]);
     const [stockQuantity, setStockQuantity]=useState(0);
     const [salesCounter, setSalesCounter]=useState(0);
     const [monthlyCounter, setMonthlyCounter]=useState(0);
-    const [mostRecent, setMostRecent]=useState([]);
+    const [mostRecent, setMostRecent]=useState([{date: "11/02/2022", items: ["Koeksisters"], totalPrice: 0, uid: "k4pUaLaKYDRuFhm75NRS"}]);
 
     const userData = route.params;
 
     const GetStockCounter = async ()=>{
         let stockTotal=0
+        let low = []
         for(var i=0; i<stock.length; i++){
             stockTotal = stockTotal + parseInt(stock[i].quantity)
+            if(stock[i].quantity < 10){
+                low.push({quantity: stock[i].quantity, name: stock[i].name})
+            }
         }
 
+        setLowStock(low)
         setStockQuantity(stockTotal)
     }
 
@@ -89,6 +100,12 @@ export default function Dashboard({navigation, route}) {
 
        })
 
+       for(var i=0; i<sale.length; i++){
+        data.push({value:sale[i].totalPrice})
+       }
+
+    //    console.log(data)
+
        setSales(sale);
 
        setSalesCounter(sale.length)
@@ -132,7 +149,7 @@ export default function Dashboard({navigation, route}) {
         <ScrollView style={styles.container2}>
       
             <Text style={styles.text}>hi there</Text>
-            <Text style={styles.header}>{userData.email}</Text>
+            {/* <Text style={styles.header}>{userData.email}</Text> */}
 
   
  
@@ -159,8 +176,9 @@ export default function Dashboard({navigation, route}) {
 
                 <View style={styles.border}>
                 
-
-                         <View style={styles.col2}>
+                {mostRecent != null ? 
+                <>
+                 <View style={styles.col2}>
                          <Text style={styles.lastSale1}>{mostRecent.items}</Text>
                          <Text style={styles.lastSale2}>{mostRecent.date}</Text>
                             </View>    
@@ -168,16 +186,119 @@ export default function Dashboard({navigation, route}) {
                             <View style={styles.price}>
                             <Text style={styles.lastSale3}>R{mostRecent.totalPrice}</Text>
                             </View>
+                </>
+     
+                : null }
+
+                        
             
                           
                 </View>
 
                 <Text style={styles.textCat}>this month's sales</Text>
-                <Image source={placeholderGraph} style={styles.placeholderGraph} />
+
+                {data != null && data.length > 0 ? 
+                <>
+                <View style={styles.graph}>
+                {/* <LineChart
+                 areaChart
+
+                 startFillColor="rgb(251, 184, 49)"
+                 startOpacity={1}
+                 endFillColor="rgb(251, 184, 49)"
+                 endOpacity={0}
+                 initialSpacing={0}
+
+                 yAxisColor="white"
+                 yAxisThickness={0}
+
+               data={data}
+               spacing={30}
+               hideDataPoints
+               thickness={4}
+               hideRules
+               hideXAxisText
+               hideYAxis
+               curved
+               xAxisColor="#fff"
+               color="#1E2F4D"
+
+               
+    
+          /> */}
+                </View>
+               
+                </>
+     
+                : null }
+
+             
+
+                {/* <Image source={placeholderGraph} style={styles.placeholderGraph} /> */}
 
             <Text style={styles.headerSection}>Stock running low</Text>
             <Text style={styles.text}>add these to your upcoming shopping list</Text>
+
+            {lowStock != null ? 
+                <>
+   <View style={styles.grid}>
+{lowStock.map((item, index) => (
+
+   <View style={styles.lowGrid} value={index}>
+      <View style={styles.txtBg}>
+           <Text style={styles.lowTxt}>{item.quantity}pcs</Text>
+      </View>
+
+      <Text style={styles.lowTxt2}>{item.name}</Text>
+ 
+   </View>
+     ))} 
+       </View>
+     
+                </>
+     
+                : null }
            
+            {/* <View style={styles.grid}>
+            <View style={styles.lowGrid}>
+               <View style={styles.txtBg}>
+                    <Text style={styles.lowTxt}>15pcs</Text>
+               </View>
+
+               <Text style={styles.lowTxt2}>Simba Chips</Text>
+            </View>
+
+            <View style={styles.lowGrid}>
+               <View style={styles.txtBg}>
+                    <Text style={styles.lowTxt}>15pcs</Text>
+               </View>
+
+               <Text style={styles.lowTxt2}>Simba Chips</Text>
+            </View>
+
+            <View style={styles.lowGrid}>
+               <View style={styles.txtBg}>
+                    <Text style={styles.lowTxt}>15pcs</Text>
+               </View>
+
+               <Text style={styles.lowTxt2}>Simba Chips</Text>
+            </View>
+
+            <View style={styles.lowGrid}>
+               <View style={styles.txtBg}>
+                    <Text style={styles.lowTxt}>15pcs</Text>
+               </View>
+
+               <Text style={styles.lowTxt2}>Simba Chips</Text>
+            </View>
+            </View> */}
+
+
+            <TouchableOpacity style={styles.btn}>
+            <Text style={styles.btntxt} >log out</Text> 
+            </TouchableOpacity>
+            
+            <View style={styles.btnbg}/>
 
         </ScrollView>
 
@@ -415,6 +536,60 @@ text3:{
 
 }, col2:{
     marginLeft:20
-}
+}, graph:{
+    marginLeft:0,
+    marginTop: 10
+},  grid: {
+    marginTop:10,
+    flex: 1,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start' // if you want to fill rows left to right
+  },
+  lowGrid: {
+    borderWidth:1.5,
+    width: '45%',
+        borderColor:'#1E2F4D',
+        borderRadius:18,
+        marginTop:20,
+        justifyContent:'space-between',
+        alignItems: 'center', 
+        padding:20,
+        margin:5
+  }, txtBg:{
+    paddingVertical:10,
+    paddingHorizontal:20,
+    backgroundColor:'#C6D7EA',
+    borderRadius:20
+  }, lowTxt:{
+    color:'#1E2F4D',
+    fontSize:17,
+    textAlign:'center',
+  }, lowTxt2:{
+    color:'#1E2F4D',
+    fontSize:14,
+    textAlign:'center',
+    marginTop:10,
+  },btn:{
+    width: '95%',
+    padding: 20,
+    backgroundColor: 'transparent',
+    borderColor:'#1E2F4D',
+    borderWidth:1.5,
+    borderRadius:20,
+    marginTop:20
+  }, btntxt:{
+    textAlign:'center',
+    fontSize:15
+  },btnbg:{
+    width: '95%',
+    height:62, 
+    backgroundColor: '#FEB930',
+    borderRadius:20,
+    zIndex:-1,
+    marginTop:-53,
+    marginLeft:8,
+    marginBottom:140
+  },
      
 });

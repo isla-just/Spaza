@@ -94,14 +94,6 @@ export default function Stocktake({navigation}) {
         <Text style={styles.header}>Items in your shop</Text>
             <Text style={styles.text}>this is where you can update prices or quantities</Text>
 
-            <TextInput
-             style={styles.input}
-             value={search}
-             onChangeText={onSearch}
-             placeholder='search for an item'
-             placeholderTextColor='#616D82'
-            />
-
 {stock.map((item, index) => (
 
 <View key={index} style={styles.border}>
@@ -131,7 +123,7 @@ export default function Stocktake({navigation}) {
             <Text style={styles.btntxt} onPress={() => setShouldShow(!shouldShow)} >Add new item</Text> 
             </TouchableOpacity>
             
-            <View style={styles.btnbg}/>
+            <View style={styles.btnbg1}/>
 
         </ScrollView>
 
@@ -152,7 +144,7 @@ export default function Stocktake({navigation}) {
             </TouchableOpacity>
 
             <Text style={styles.headerPopup}>Add new item</Text>
-            <Text style={styles.headerPopup2}>Psttt try and name the item very broadly so the AI can pick it up</Text>
+            <Text style={styles.headerPopup2}>Psttt name the item according to its packaging</Text>
 
             <KeyboardAvoidingView 
         behavior={Platform.OS === "ios" ? "padding":"height"}
@@ -177,7 +169,7 @@ export default function Stocktake({navigation}) {
              style={styles.input2}
              value={price}
              onChangeText={onPriceChange}
-             placeholder='Price'
+             placeholder='Price per unit'
              placeholderTextColor='#616D82'
              
              
@@ -218,7 +210,7 @@ export default function Stocktake({navigation}) {
             />
 
 
-<Text style={styles.smol}>Price</Text>
+<Text style={styles.smol}>Price per unit</Text>
 
             <TextInput
              style={styles.input2}
@@ -495,10 +487,10 @@ height:20
         borderRadius:20,
         zIndex:-1,
         marginTop:-53,
-        marginLeft:8
+        marginLeft:8,
       }, overlay:{
         position:'absolute',
-        backgroundColor:'#00000020 ',
+        backgroundColor:'#00000050',
         width:'100%',
         height:'100%',
      
@@ -573,6 +565,15 @@ height:20
         marginTop:20,
         marginBottom:-30
 
-      }
+      },btnbg1:{
+        width: btn_prop,
+        height:62, 
+        backgroundColor: '#FEB930',
+        borderRadius:20,
+        zIndex:-1,
+        marginTop:-53,
+        marginLeft:8,
+        marginBottom: 120
+      },
      
 });
