@@ -34,9 +34,8 @@ export default function Login({navigation}) {
         .then((userCredentials) =>{
             //when successful
             const user = userCredentials.user;
-            Alert.alert(user.uid);
 
-            navigation.navigate("Onboarding1");
+            navigation.navigate("Dashboard", user);
         })
         .catch((error)=>{
             //when failed

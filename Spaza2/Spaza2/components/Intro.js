@@ -39,7 +39,8 @@ export default class Intro extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            showRealApp: false
+            showRealApp: false,
+            navigation: props.navigation
           }
     }
 
@@ -79,7 +80,8 @@ export default class Intro extends React.Component {
   render() {
     if (this.state.showRealApp) {
       // return <Login />;
-      return <Signup />;
+      this.props.navigation.replace("Signup")
+      // return <Signup />;
     } else {
       return <AppIntroSlider activeDotStyle={{width: 40, backgroundColor:'#1E2F4D'}} renderItem={this._renderItem} data={slides} onDone={this._onDone}/>;
     }

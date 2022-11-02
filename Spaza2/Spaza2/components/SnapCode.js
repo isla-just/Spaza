@@ -1,8 +1,10 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import logo from '../assets/logo.png';
 import ill4 from '../assets/ill4.png';
-
+import { auth } from '../Firebase';
+import { getUserQR } from '../services/Database';
+import {getStorage, ref, uploadBytes} from 'firebase/storage'
 
  
 const height_proportion = '100%';
@@ -12,6 +14,21 @@ const txt_prop = '90%';
 
  
 export default function SnapCode({navigation}) {
+
+  const [QR, setQR] = useState('');
+
+  const GetQR = async ()=>{
+var userId = auth.currentUser.uid
+    const userData = await getUserQR(userId);
+    setQR(userData.merchant_id);
+}
+
+
+useEffect(() => {
+
+  console.log(QR)
+     GetQR()
+},[QR]);
 
     return (
         
@@ -23,7 +40,10 @@ export default function SnapCode({navigation}) {
             <Text style={styles.title}>get the shopper to scan this QR code</Text>
             <Text style={styles.text}>and snapscan will do the rest</Text>
 
-            <Text style={styles.title}>pull snapcode</Text>
+            <Image
+            source={{uri: QR}}
+            style={styles.url}
+            />
 
             <TouchableOpacity style={styles.btn}>
             <Text style={styles.btntxt} onPress={()=> navigation.navigate("Success")} >Done</Text> 
@@ -74,6 +94,7 @@ const styles = StyleSheet.create({
           marginTop:10,
           textAlign:'center',
           width: txt_prop,
+          marginBottom: 50
       },
     buttonCircle: {
         width: 40,
@@ -90,7 +111,7 @@ const styles = StyleSheet.create({
         borderColor:'#1E2F4D',
         borderWidth:1.5,
         borderRadius:20,
-        marginTop:20
+        marginTop:50
       }, btntxt:{
         textAlign:'center',
         fontSize:15
@@ -130,5 +151,9 @@ const styles = StyleSheet.create({
         backgroundColor:'#FEB930',
         marginTop:43,
         marginLeft:265
+    }, url:{
+      width:300,
+      height:300,
+      backgroundColor:'#000'
     }
 });

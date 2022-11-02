@@ -25,7 +25,7 @@ export default function Onboarding({navigation}) {
   //     </View>
    
 
- <Intro/>
+ <Intro navigation={navigation}/>
 
     );
 }

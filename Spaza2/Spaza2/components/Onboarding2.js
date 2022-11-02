@@ -3,10 +3,9 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView, TextInpu
 import logo from '../assets/logo.png';
 import ill5 from '../assets/ill5.png';
 import * as ImagePicker from 'expo-image-picker';
-import {getStorage, ref, uploadBytes} from 'firebase/storage'
-import { updateUserData } from '../services/Database';
+import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage'
 import { auth } from '../Firebase';
-
+import { updateUserData } from '../services/Database';
 
 const height_proportion = '100%';
 const btn_prop = '80%';
@@ -32,17 +31,44 @@ export default function Onboarding2({navigation}) {
         console.log(result.uri);
 
         const storage = getStorage();
-        const storageRef = ref(storage, 'Images/'+result.uri);
+        const imageRef = ref(storage, "images/" + auth.currentUser.uid+ ".jpg")
 
-        uploadBytes(storageRef, result.uri).then((snapshot) => {
-          console.log('Uploaded a blob or file!');
-          updateUserData(auth.currentUser.uid,{merchant_id:result.uri});
-        });
+        //convert our upload uri to a blob first
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+              resolve(xhr.response);
+            };
+            xhr.onerror = function (e) {
+              console.log(e);
+              reject(new TypeError("Network request failed"));
+            };
+            xhr.responseType = "blob"; //converting response type as a blob that is used for upload
+            xhr.open("GET", result.uri, true);
+            xhr.send(null);
+          });
 
+          //upload the image blob to our image reference
+        await uploadBytes(imageRef, blob).then((snapshot) => {
+            getDownloadURL(snapshot.ref).then((url) => {
+                console.log(url)
+                //get the download url and add to DB
+         
+                  updateUserData(auth.currentUser.uid, {merchant_id:url});
 
-       
-    
-      }
+                  console.log("uploaded")
+      
+            })
+            .catch((error) => console.log(error))
+        })
+        .catch((error) => console.log(error))
+        // We're done with the blob, close and release it
+        blob.close();
+
+        navigation.navigate("Dashboard")
+    }
+
+  
     
     };
 

@@ -36,8 +36,8 @@ export default function SignUp({navigation}) {
                 createUserOnRegister(user)
 
                 //to do: add user to DB
-                Alert.alert("account created"+user.uid);
-                // navigation.replace("Permissions");
+                // Alert.alert("account created"+user.uid);
+                navigation.navigate("Onboarding1", user);
             })
             .catch((error)=>{
                 //when failed

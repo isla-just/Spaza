@@ -9,7 +9,7 @@ import { doc, onSnapshot } from 'firebase/firestore'
 import pattern from '../assets/pattern.png';
 import placeholderGraph from '../assets/placeholderGraph.png';
 
-import { addStock, getAllStockListener } from '../services/Database';
+import { addStock, getAllSalesListener, getAllStockListener } from '../services/Database';
 
 
 // import * as Font from 'expo-font';
@@ -23,10 +23,16 @@ import { addStock, getAllStockListener } from '../services/Database';
 
 const height_proportion = '100%';
 
-export default function Dashboard({navigation}) {
+export default function Dashboard({navigation, route}) {
 
     const [stock, setStock]=useState([]);
+    const [sales, setSales]=useState([]);
     const [stockQuantity, setStockQuantity]=useState(0);
+    const [salesCounter, setSalesCounter]=useState(0);
+    const [monthlyCounter, setMonthlyCounter]=useState(0);
+    const [mostRecent, setMostRecent]=useState([]);
+
+    const userData = route.params;
 
     const GetStockCounter = async ()=>{
         let stockTotal=0
@@ -37,13 +43,21 @@ export default function Dashboard({navigation}) {
         setStockQuantity(stockTotal)
     }
 
-
+    const GetMostRecent = async ()=>{
+        let recent=[]
+      if(sales != null && sales != undefined){
+        setMostRecent(sales[sales.length-1])
+        // console.log(sales[sales.length-1])
+        // console.log(sales[0])
+      }
+    }
 
   useFocusEffect(
     
     React.useCallback(()=>{
 
         GetStockCounter()
+  
 
       const collectionRef=getAllStockListener();
 
@@ -56,18 +70,56 @@ export default function Dashboard({navigation}) {
 
             stocks.push(stockData);
         })
-
         setStock(stocks);
     })
+
+     //get all sales
+
+
+     const collectionRef2=getAllSalesListener();
+
+     const unsub2 = onSnapshot(collectionRef2, (snapshot)=>{
+       let sale=[];
+   
+       snapshot.forEach((doc)=>{
+
+           let salesData={...doc.data(), uid:doc.id}
+
+           sale.push(salesData);
+
+       })
+
+       setSales(sale);
+
+       setSalesCounter(sale.length)
+      
+
+       const today = new Date().getMonth()+1;
+      
+       var monthCounter = 0;
+
+       for (var i=0;i<sales.length; i++){
+       var monthVal = parseInt(sale[i].date.slice(0, 2));
+        if(monthVal == today){
+            monthCounter++;
+        }else{
+            //do nothing
+        }
+       }
+
+       setMonthlyCounter(monthCounter)
+
+    })
+
+    GetMostRecent()
 
     return()=>{
         //do something here when the sacreen is focussed
         unsub();
-      
+        unsub2();
     }
-
   
-    },[stock])
+    },[sales, monthlyCounter, salesCounter])
     )
     
 
@@ -80,11 +132,15 @@ export default function Dashboard({navigation}) {
         <ScrollView style={styles.container2}>
       
             <Text style={styles.text}>hi there</Text>
-            <Text style={styles.header}>Zandile!</Text>
+            <Text style={styles.header}>{userData.email}</Text>
 
-            <View style={styles.pfp}/>
+  
  
             <Image source={card} style={styles.card} />
+           <View style={styles.cardoverlap}>
+            <Text style={styles.count}>{salesCounter}</Text>
+            <Text style={styles.label}>total sales with spaza</Text>
+           </View>
 
             <View style={styles.yellowBlock}>
             <Text style={styles.header2}>{stockQuantity}</Text>
@@ -93,7 +149,7 @@ export default function Dashboard({navigation}) {
             </View>
 
             <View style={styles.blueBlock}>
-            <Text style={styles.header3}>30</Text>
+            <Text style={styles.header3}>{monthlyCounter}</Text>
             <Text style={styles.text3}>sales in the month of November</Text>
             </View>
             <Image source={pattern} style={styles.pattern} />
@@ -102,15 +158,15 @@ export default function Dashboard({navigation}) {
             <Text style={styles.text}>last sale</Text>
 
                 <View style={styles.border}>
-                    <View style={styles.square}></View>
+                
 
                          <View style={styles.col2}>
-                         <Text style={styles.lastSale1}>2 items</Text>
-                         <Text style={styles.lastSale2}>2 November 2022</Text>
+                         <Text style={styles.lastSale1}>{mostRecent.items}</Text>
+                         <Text style={styles.lastSale2}>{mostRecent.date}</Text>
                             </View>    
 
                             <View style={styles.price}>
-                            <Text style={styles.lastSale3}>R80.00</Text>
+                            <Text style={styles.lastSale3}>R{mostRecent.totalPrice}</Text>
                             </View>
             
                           
@@ -199,9 +255,9 @@ borderRadius:55,
         width:110,
         borderRadius:18,
         padding:20,
-        marginTop:-90,
         alignSelf:'flex-start',
         marginLeft:0,
+        marginTop:40,
 
 
         shadowColor: '#000000',
@@ -229,8 +285,8 @@ borderRadius:55,
     borderRadius:18,
     padding:20,
     marginLeft:135,
-    marginTop:-125,
     flexDirection:'row',
+    marginTop:-125,
 
     shadowColor: '#000000',
     shadowOffset: {width: 0, height: 2},
@@ -338,6 +394,26 @@ text3:{
     height:2,
     backgroundColor:'#FEB930',
     marginTop:43,
+    marginLeft:20
+},cardoverlap:{
+    width:180,
+    marginLeft:20,
+
+    marginTop:-190,
+    flexDirection:'row',
+
+}, count:{
+    fontSize:50,
+    color:'#FFFFFF',
+    fontWeight:'bold',
+}, label:{
+    fontSize:15,
+    color:'#FFFFFF',
+    marginLeft:40,
+    marginTop:10,
+    width:100
+
+}, col2:{
     marginLeft:20
 }
      

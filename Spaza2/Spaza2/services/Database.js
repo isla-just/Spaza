@@ -2,7 +2,7 @@
 import {db} from "../Firebase"; //firestore instance
 
 //firestore functions
-import { doc, setDoc, Timestamp, collection, getDocs, addDoc, query, onSnapshot, where, orderBy, limit, deleteDoc } from "firebase/firestore"; 
+import { doc, setDoc, Timestamp, collection, getDocs, addDoc, query, onSnapshot, where, orderBy, limit, deleteDoc, getDoc } from "firebase/firestore"; 
 
 //creates a document for the user in our users collection
 export const createUserOnRegister=(user)=>{
@@ -45,6 +45,11 @@ export const getAllStock= async ()=>{
 export const getAllStockListener=()=>{
     //returning this reference
     return query(collection(db, "stock") ,orderBy('quantity', 'asc'));
+}
+
+export const getAllSalesListener=()=>{
+    //returning this reference
+    return query(collection(db, "sales") ,orderBy('date', 'asc'));
 }
 
 //add new items
@@ -98,21 +103,17 @@ export const updateUserData =(uid, data)=>{
 
 export const getUserQR=async (id)=>{
     
-    const querySnapshot = await getDoc(collection(db, 'users'), where("uid", "==", id));
-    var allData=[];
-    // const date = dateCreated.toDate().toDateString()
-
-    querySnapshot.forEach((doc)=>{
-
-    const userData={
-        merchant_id:doc.data().merchant_id,
-        uid:doc.data().uid
-    }
-
-    allData=userData;
-})
+    const querySnapshot = await getDoc(doc(db, 'users', id));
+    if (querySnapshot.exists()) {
+        // console.log("Document data:", querySnapshot.data());
+        return(querySnapshot.data());
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
 }
 
+//
 
 //get total sales 
 //get count items in stock
