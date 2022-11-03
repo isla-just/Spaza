@@ -9,7 +9,8 @@ const height_proportion = '100%';
 const btn_prop = '80%';
 const txt_prop = '90%';
 
-
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
 const slides = [
     {
       key: 1,

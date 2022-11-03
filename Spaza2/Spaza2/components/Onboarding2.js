@@ -7,11 +7,16 @@ import {getStorage, ref, uploadBytes, getDownloadURL} from 'firebase/storage'
 import { auth } from '../Firebase';
 import { updateUserData } from '../services/Database';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
 const height_proportion = '100%';
 const btn_prop = '80%';
 const txt_prop = '90%';
  
-export default function Onboarding2({navigation}) {
+export default function Onboarding2({navigation, route}) {
+
+  const userData = route.params;
 
 
   const [image, setImage] = useState(null)
@@ -65,7 +70,7 @@ export default function Onboarding2({navigation}) {
         // We're done with the blob, close and release it
         blob.close();
 
-        navigation.navigate("Dashboard")
+        navigation.navigate("Dashboard", userData)
     }
 
   
@@ -80,17 +85,14 @@ export default function Onboarding2({navigation}) {
 
 <Image source={logo} style={styles.logo} />
 
-            {/* <Image source={ill5} />
+            <Image source={ill5} />
             <Text style={styles.title}>looking for your snapscan account</Text>
             <Text style={styles.text}>your merchant name is your snapscan username</Text>
 
-            <TouchableOpacity style={styles.btn}>
+            <TouchableOpacity style={styles.btn} onPress={pickImage}>
             <Text style={styles.btntxt} >Select Image</Text> 
             </TouchableOpacity>
-            <View style={styles.btnbg}/> */}
-
-            {image && <Image source={{uri: image}} style={{width: 170 , height: 200}}/>}
-      <Button title='Select Image' onPress={pickImage} />
+            <View style={styles.btnbg}/>
 
 
             </View>

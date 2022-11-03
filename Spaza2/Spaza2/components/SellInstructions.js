@@ -3,7 +3,8 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, SafeAreaView } from 'r
 import logo from '../assets/logo.png';
 import ill4 from '../assets/ill4.png';
 
-
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
  
 const height_proportion = '100%';
 const btn_prop = '80%';

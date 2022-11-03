@@ -113,15 +113,8 @@ export const getUserQR=async (id)=>{
       }
 }
 
-//
-
-//get total sales 
-//get count items in stock
-//monthly sales counter
-//sales for current month
-//get all stock - sort by running low quantity
-//edit stock
-//add new product
-
-//search for item by name
-//get getQRCode
+//deduct stock on sale
+export const updateStockData =(uid, data)=>{
+    const stockRef = doc(db, "stock", uid);
+    return setDoc(stockRef, data, {merge:true}); // add the option to merge document andnot overwrite 
+}

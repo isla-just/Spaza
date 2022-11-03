@@ -8,6 +8,9 @@ import logo from '../assets/logo.png';
 import ill1 from '../assets/ill1.png';
 import Intro from './Intro'
 
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
 import AppIntroSlider from 'react-native-app-intro-slider';
 
 const height_proportion = '100%';

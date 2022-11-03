@@ -9,6 +9,8 @@ import pattern from '../assets/pattern.png';
 import placeholderGraph from '../assets/placeholderGraph.png';
 import { addStock, getAllStockListener, editStock, deleteStock } from '../services/Database';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const height_proportion = '100%';
 const btn_prop = '100%';

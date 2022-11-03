@@ -18,9 +18,12 @@ import { auth } from '../Firebase';
 //     'semiBold':require('../assets/fonts/MontserratAlternates-SemiBold.ttf'),
 //   });
 
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
 const height_proportion = '100%';
 
 export default function Login({navigation}) {
+    
 
     const [email, onEmailChange]=useState("");
     const [password, onPasswordChange]=useState("");

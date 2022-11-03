@@ -5,6 +5,9 @@ import scribble from '../assets/scribble.png';
 import scribble2 from '../assets/scribble2.png';
 import squiggle from '../assets/squiggle.png';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
 // linking your firebase
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../Firebase';

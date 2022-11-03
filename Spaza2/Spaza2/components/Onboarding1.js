@@ -7,9 +7,14 @@ const height_proportion = '100%';
 const btn_prop = '80%';
 const txt_prop = '90%';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
 
  
-export default function Onboarding1({navigation}) {
+export default function Onboarding1({navigation, route}) {
+  
+  const userData = route.params;
 
     return (
         
@@ -23,7 +28,7 @@ export default function Onboarding1({navigation}) {
 
 
             <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btntxt} onPress={()=> navigation.navigate("Onboarding2")} >I've registered!</Text> 
+            <Text style={styles.btntxt} onPress={()=> navigation.navigate("Onboarding2", userData)} >I've registered!</Text> 
             </TouchableOpacity>
             <View style={styles.btnbg}/>
 

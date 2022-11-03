@@ -14,7 +14,8 @@ import placeholderGraph from '../assets/placeholderGraph.png';
 
 import { addStock, getAllSalesListener, getAllStockListener } from '../services/Database';
 
-
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
 // import * as Font from 'expo-font';
 
 // Font.loadAsync({
@@ -28,6 +29,7 @@ const height_proportion = '100%';
 
 export default function Dashboard({navigation, route}) {
 
+
     // const data=[]
     const [data, setData]=useState([]);
     const [lowStock, setLowStock]=useState([]);
@@ -36,7 +38,7 @@ export default function Dashboard({navigation, route}) {
     const [stockQuantity, setStockQuantity]=useState(0);
     const [salesCounter, setSalesCounter]=useState(0);
     const [monthlyCounter, setMonthlyCounter]=useState(0);
-    const [mostRecent, setMostRecent]=useState([{date: "11/02/2022", items: ["Koeksisters"], totalPrice: 0, uid: "k4pUaLaKYDRuFhm75NRS"}]);
+    const [mostRecent, setMostRecent]=useState([{date: "11/02/2022", items: ["Koeksisters"], totalPrice: 100, uid: "k4pUaLaKYDRuFhm75NRS"}]);
 
     const userData = route.params;
 
@@ -149,7 +151,7 @@ export default function Dashboard({navigation, route}) {
         <ScrollView style={styles.container2}>
       
             <Text style={styles.text}>hi there</Text>
-            {/* <Text style={styles.header}>{userData.email}</Text> */}
+            <Text style={styles.header}>isla@just.co.za</Text>
 
   
  
@@ -200,9 +202,8 @@ export default function Dashboard({navigation, route}) {
                 {data != null && data.length > 0 ? 
                 <>
                 <View style={styles.graph}>
-                {/* <LineChart
+                <LineChart
                  areaChart
-
                  startFillColor="rgb(251, 184, 49)"
                  startOpacity={1}
                  endFillColor="rgb(251, 184, 49)"
@@ -225,7 +226,7 @@ export default function Dashboard({navigation, route}) {
 
                
     
-          /> */}
+          />
                 </View>
                
                 </>

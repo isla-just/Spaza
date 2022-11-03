@@ -6,7 +6,9 @@ import { auth } from '../Firebase';
 import { getUserQR } from '../services/Database';
 import {getStorage, ref, uploadBytes} from 'firebase/storage'
 
- 
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
+
 const height_proportion = '100%';
 const btn_prop = '80%';
 const txt_prop = '90%';
@@ -154,6 +156,6 @@ const styles = StyleSheet.create({
     }, url:{
       width:300,
       height:300,
-      backgroundColor:'#000'
+      backgroundColor:'#FFF'
     }
 });

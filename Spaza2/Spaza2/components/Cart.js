@@ -11,21 +11,29 @@ import { useFocusEffect } from '@react-navigation/native'
 import { doc, onSnapshot } from 'firebase/firestore'
 import { addStock, getAllStockListener } from '../services/Database';
 
-
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();//Ignore all log notifications
 const height_proportion = '100%';
 
 export default function Cart({route, navigation}) {
+
 
     const items = route.params;
     const [allStock, setAllStock]=useState([]);
     var tempArr =[]
 
     const [stock, setStock]=useState([]);
+    const [stockListener, setStockListener]=useState(false);
+    const [calcListener, setCalcListener]=useState(false);
 
     const compareFirebase = async ()=>{
 
       let stocks=[];
       const stocksDB = await getAllStock();
+
+      if(stocksDB){
+        console.log("calling firebase")
+      }
 
       let newArray = stocksDB.map((item) => {
         stocks.push(item)
@@ -39,7 +47,7 @@ export default function Cart({route, navigation}) {
 
             if(items.toLowerCase().includes(substring.toLowerCase()) || items.toLowerCase() == substring.toLowerCase()){
 
-              console.log("match found" + stocks[i].name)
+              // console.log("match found" + stocks[i].name)
               //appending to the stock array
               tempArr.push({name: stocks[i].name, price: stocks[i].price, quantity:1})
               // setStock([...stock,  {name: stocks[i].name, price: stocks[i].price, quantity:1}])
@@ -47,8 +55,10 @@ export default function Cart({route, navigation}) {
              //not found
             }
           }
+          
     
         setStock(tempArr)
+        setStockListener(true)
     }
 
 
@@ -69,22 +79,24 @@ export default function Cart({route, navigation}) {
         var new_Name = result[0];
         var new_Price = result[1];
 
-        // console.log(new_Name)
-        // console.log(new_Price)
+        console.log(new_Name)
+        console.log(new_Price)
 
         setNewName(new_Name);
         setNewPrice(new_Price);
         setNewQuantity(1);
 
-        setStock([
-          ...stock,
-          {name: new_Name, price: new_Price, quantity: 1}
-        ]);
+        var newArray=[]
+        for(var i=0; i<stock.length; i++){
+          newArray.push({name: stock[i].name, price: stock[i].price, quantity:1})
+        }
 
+        newArray.push({name: new_Name, price: new_Price, quantity: 1});
+        console.log(newArray)
 
-        //set use states
-        
-        // let newPrice = 
+        setStock(newArray);
+        setCalcListener(true)
+
     }
 
     const AddItem = async ()=>{
@@ -99,15 +111,14 @@ export default function Cart({route, navigation}) {
         var date = today
 
         //aray of items
-        var items = []
+        var items=[]
         for(var i=0; i<stock.length; i++){
-            
         items.push(stock[i].name)
-          // console.log(items)
+          console.log(items)
         }
 
         await addSale({date, items, totalPrice})
-        console.log("successfully added")
+        // console.log("successfully added")
         navigation.navigate("SnapCode");
     }
 
@@ -124,24 +135,36 @@ export default function Cart({route, navigation}) {
 
       }
 
+      const calcTotal = async () =>{
+        var tempCalc = 0
+
+        if(stock != null) {
+          for(var i=0; i<stock.length; i++){
+
+            tempCalc = tempCalc + (parseInt(stock[i].price)*parseInt(stock[i].quantity))
+            // console.log(stock[i].price)
+          }
+  
+        }else{
+          console.log("stock not set yet")
+        }
+       
+        setTotalPrice(tempCalc)
+      }
+
     useEffect(() => {
      
-        var tempCalc = 0
-        for(var i=0; i<stock.length; i++){
-
-          tempCalc = tempCalc + (parseInt(stock[i].price)*parseInt(stock[i].quantity))
-  
-        }
-
-        console.log("below is your stock")
-        console.log(stock)
-
-        setTotalPrice(tempCalc)
-
-        // setStock({name, quantity, price})
 populateDropdown()
 compareFirebase()
-      },[]);
+calcTotal()
+
+//rerun the function
+if(calcListener == true){
+  calcTotal()
+}
+
+console.log(stock)
+      },[stockListener]);
 
 
     // const [aiReturned, setAiReturned]=useState({
@@ -157,7 +180,7 @@ compareFirebase()
 
     <SafeAreaView style={styles.container}>
 
-        <View style={styles.container2}>
+        <ScrollView style={styles.container2}>
       
         <Text style={styles.header}>New Sale</Text>
             <Text style={styles.text}>calculated using AI</Text>
@@ -186,10 +209,12 @@ compareFirebase()
                 <SelectList setSelected={setSelected} data={data} onSelect={appendItem} boxStyles={{marginTop:20, borderColor:'#1E2F4D', borderWidth:1.5, color:'#1E2F4D', padding:20, borderRadius:18}} inputStyles={{fontColor:"#1E2F4D", fontSize:15}} placeholder="add item manually" dropdownStyles={{borderColor:'#1E2F4D', borderWidth:1.5, color:'#1E2F4D',  borderRadius:18}}/>
                 </View>
 
-                <View style={{width:'100%',   flexDirection:'row'}}>
+         
+                  <View style={{width:'100%',   flexDirection:'row'}}>
                     <Text style={styles.sub}>Subtotal</Text>
                     <Text style={styles.sub2}>R{totalPrice}</Text>
                 </View>
+             
 
 
             <TouchableOpacity style={styles.btn} onPress={AddItem}>
@@ -202,7 +227,7 @@ compareFirebase()
     
            
 
-        </View>
+        </ScrollView>
 
         <View style={styles.navigation}>
         <TouchableOpacity onPress={()=> navigation.navigate("Dashboard")}><Text  style={styles.navItem}>Home</Text></TouchableOpacity>
@@ -233,7 +258,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         width:'100%',
         padding:40, 
-        alignItems: 'center',
+    
       
         top:60
 
@@ -484,7 +509,8 @@ height:20
     borderRadius:20,
     zIndex:-1,
     marginTop:-53,
-    marginLeft:8
+    marginLeft:8, 
+    marginBottom:120
   },
      
 });
