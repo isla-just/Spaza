@@ -1,10 +1,10 @@
 <!-- PROJECT LOGO -->
 <br />
 
-![GitHub repo size](https://img.shields.io/github/repo-size/isla-just/Spaza?color=%23FE5A59)
-![GitHub watchers](https://img.shields.io/github/watchers/isla-just/Spaza?color=%23F4B3DD)
-![GitHub language count](https://img.shields.io/github/languages/count/isla-just/Spaza?color=%23445CC8)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/isla-just/Spaza?color=%23FDD024)
+![GitHub repo size](https://img.shields.io/github/repo-size/isla-just/Spaza?color=%231E2F4D)
+![GitHub watchers](https://img.shields.io/github/watchers/isla-just/Spaza?color=%23CCDDEF)
+![GitHub language count](https://img.shields.io/github/languages/count/isla-just/Spaza?color=%239DC39C)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/isla-just/Spaza?color=%23FEB930)
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![Instagram][instagram-shield]][instagram-url]
 
