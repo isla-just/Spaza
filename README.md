@@ -25,7 +25,7 @@
       <a href="https://github.com/isla-just/Spaza"><strong>Explore the docs »</strong></a>
       <br />
       <br />
-      <a href="ReadMeImg/IslaJust_200080_DV300_T1_demo.mp4">View Demo</a>
+      <a href="https://drive.google.com/file/d/1u50WK_0OsHp2c_UdYsXfx5iIYmHGkPXJ/view?usp=sharing">View Demo</a>
        ·
        <a href="https://github.com/isla-just/Spaza/issues">Report Bug</a>
        ·
@@ -217,14 +217,14 @@ When I got the AI to actually work, I managed to add items to the cart and check
 
 To see a run through of the application, click below:
 
-[View Demonstration]()
+[View Demonstration](https://drive.google.com/file/d/1u50WK_0OsHp2c_UdYsXfx5iIYmHGkPXJ/view?usp=sharing)
 
 <!-- PROMO VIDEO -->
 ## Promotional Video
 
 To see the promotional video, click below:
 
-[View Promotional Video]()
+[View Promotional Video](https://youtu.be/lgKiEEDi1iI)
 
 <!-- ROADMAP -->
 ## Roadmap
